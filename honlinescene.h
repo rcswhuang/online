@@ -28,10 +28,10 @@ public:
     HOnlineScene(HOnlineMgr *mgr);
 
 public:
-    void openGraphEditorSceneItems();
-    void delGraphEditorSceneItems();
-    void addIconGraphicsItem(HBaseObj* pObj,bool del = false);//obj->item
-    void newIconGraphicsObj();//新建obj
+    void openOnlineSceneItems();
+    void delOnlineSceneItems();
+    void addOnlineIconItem(HBaseObj* pObj,bool del = false);//obj->item
+    void newOnlineIconObj();//新建obj
     void setItemCursor(QGraphicsSceneMouseEvent *mouseEvent);
     void setItemProperty(QGraphicsItem* item);
 protected:

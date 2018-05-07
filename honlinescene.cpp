@@ -90,13 +90,17 @@ void HOnlineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 }
 
-void HOnlineScene::newIconGraphicsObj()
+void HOnlineScene::newOnlineIconObj()
 {
     if(!pOnlineMgr)
         return;
 }
 
-void HOnlineScene::addIconGraphicsItem(HBaseObj* pObj,bool bdel)
+/*
+ * 函数说明:加载图元到OnlineScene上面
+ * 参数:pObj--图元 bdel：是否删除
+*/
+void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
 {
     DRAWSHAPE drawShape = pObj->getShapeType();
     int nZValue = pObj->getStackOrder();
@@ -227,7 +231,7 @@ void HOnlineScene::addIconGraphicsItem(HBaseObj* pObj,bool bdel)
     }
 }
 
-void HOnlineScene::openGraphEditorSceneItems()
+void HOnlineScene::openOnlineSceneItems()
 {
     if(!pOnlineMgr)
         return;
@@ -242,11 +246,17 @@ void HOnlineScene::openGraphEditorSceneItems()
         HBaseObj* pObj = (HBaseObj*)pObjList[i];
         if(!pObj)
             continue;
-        addIconGraphicsItem(pObj,true);
+        addOnlineIconItem(pObj,true);
     }
 }
 
+/*
+ * 函数说明:在显示即将打开的画面之前，删除当前画面图元
+*/
+void HOnlineScene::delOnlineSceneItems()
+{
 
+}
 
 void HOnlineScene::setItemCursor(QGraphicsSceneMouseEvent *mouseEvent)
 {

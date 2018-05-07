@@ -6,7 +6,8 @@ class HOnlineTreeWidget;
 namespace Ui {
 class HOnlineMainWindow;
 }
-
+class HOnlineMgr;
+class HOnlineView;
 class HOnlineMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -17,9 +18,14 @@ public:
 
 public:
     void initOnlineMainWindow();
+
+public slots:
+    void Open(const QString&,const int);
 private:
     Ui::HOnlineMainWindow *ui;
-    HOnlineTreeWidget* pOnlineTreeWidget;
+    HOnlineTreeWidget* m_pOnlineTreeWidget;
+    HOnlineView* m_pOnlineView;
+    HOnlineMgr* m_pOnlineMgr;
 };
 
 #endif // HONLINEMAINWINDOW_H

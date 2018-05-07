@@ -40,8 +40,8 @@ public:
     //加载画面信息
     void loadAllGraph();
 
-    //保存画面信息
-    void saveAllGraph();
+    //查找根画面
+    HGraph* findRootGraph();
 
     //查找画面
     HGraph* findGraph(int graphID);

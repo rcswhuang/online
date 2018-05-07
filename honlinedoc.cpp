@@ -93,11 +93,30 @@ HStation* HOnlineDoc::findStation(int nIndex)
 void HOnlineDoc::loadAllGraph()
 {
     HGraphHelper::Instance()->loadAllGraph(&pGraphList);
+
+    //设置当前画面为根画面
+    pCurGraph = findRootGraph();
 }
 
 void HOnlineDoc::saveAllGraph()
 {
     HGraphHelper::Instance()->saveAllGraph(&pGraphList,getCurGraph());
+}
+
+//查找根画面
+HGraph* HOnlineDoc::findRootGraph()
+{
+    HGraph* pRootGraph = NULL;
+    for(int i = 0; i < pGraphList.count();i++)
+    {
+        HGraph* pGraph = (HGraph*)pGraphList[i];
+        if(pGraph && pGraph->bStart)
+        {
+            pRootGraph = pGraph;
+            break;
+        }
+    }
+    return pRootGraph;
 }
 
 //按照ID查找画面
@@ -133,19 +152,7 @@ bool HOnlineDoc::openGraph(const QString& name,const int id)
     HGraph* graph = findGraph(id);
     if(!graph)
         return false;
-
-    if(pCurGraph)
-    {
-        if(pCurGraph->getGraphID() == graph->getGraphID())
-            return true;
-        pCurGraph->clear();
-        delete pCurGraph;
-        pCurGraph = NULL;
-    }
-
-    pCurGraph = new HGraph("tempGraph");
-    if(!pCurGraph) return false;
-    graph->copyTo(pCurGraph);
+    pCurGraph = graph;
     return true;
 }
 

@@ -74,7 +74,6 @@ void HOnlineMgr::setOnlineView(HOnlineView* view)
     {
         pBar->setSliderPosition(pBar->minimum());
     }
-
 }
 
 HOnlineView* HOnlineMgr::onlineView()
@@ -109,17 +108,6 @@ bool HOnlineMgr::findGraphByName(const QString& graphName)
     return true;
 }
 
-void HOnlineMgr::setDrawShape(DRAWSHAPE ds)
-{
-    drawShape = ds;
-}
-
-DRAWSHAPE HOnlineMgr::getDrawShape()
-{
-    return drawShape;
-}
-
-
 bool HOnlineMgr::Open(const QString& graphName,int id)
 {
     if(!pOnlineDoc)
@@ -135,16 +123,16 @@ void HOnlineMgr::refreshView()
     pOnlineView->refresh();
 }
 
-void HOnlineMgr::openGraphScene()
+void HOnlineMgr::openOnlineScene()
 {
     if(!pOnlineScene)
         return;
-    pOnlineScene->openGraphEditorSceneItems();
+    pOnlineScene->openOnlineSceneItems();
 }
 
-void HOnlineMgr::delGraphSceneItem()
+void HOnlineMgr::clearOnlineSceneItem()
 {
     if(!pOnlineScene)
         return;
-    pOnlineScene->delGraphEditorSceneItems();
+    pOnlineScene->delOnlineSceneItems();
 }

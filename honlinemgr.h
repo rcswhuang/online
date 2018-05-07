@@ -44,12 +44,6 @@ public:
     //打开画面
     bool Open(const QString&,int);
 
-    //
-    void setDrawShape(DRAWSHAPE ds);
-
-    //
-    DRAWSHAPE getDrawShape();
-
     //设置逻辑界面大小
     void setLogicRect(const QRectF& rect);
 
@@ -58,11 +52,11 @@ public:
     //刷新view
     void refreshView();
 
-    //清空scene上面所有的Item
-    void openGraphScene();
+    //加载online图元
+    void openOnlineScene();
 
     //清除online上的item
-    void delGraphSceneItem();
+    void clearOnlineSceneItem();
 
 
 protected:
@@ -73,7 +67,6 @@ protected:
     HOnlineView* pOnlineView;
 
 private:
-    DRAWSHAPE drawShape;
     QRectF logicRectF;  //scene的大小
     HGraph* pTempGraph; //临时画面文件
     QString strGraphFile;
