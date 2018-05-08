@@ -1,6 +1,9 @@
 ﻿#ifndef HONLINESCENE_H
 #define HONLINESCENE_H
-
+/*
+ * 五防系统场景基类，又是画面浏览scene类
+ * 操作票scene,模板票编辑secne的基类
+*/
 #include <QGraphicsScene>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QGraphicsSceneDragDropEvent>
@@ -20,21 +23,21 @@ class HIconSelectionItem;
 class HIconGraphicsItem;
 class HIconItemGroup;
 class HBaseObj;
-class HOnlineMgr;
+class HWfSystemMgr;
+
 class HOnlineScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    HOnlineScene(HOnlineMgr *mgr);
-
+    HOnlineScene(HWfSystemMgr *mgr);
 public:
-    void openOnlineSceneItems();
-    void delOnlineSceneItems();
-    void addOnlineIconItem(HBaseObj* pObj,bool del = false);//obj->item
-    void newOnlineIconObj();//新建obj
     void setItemCursor(QGraphicsSceneMouseEvent *mouseEvent);
     void setItemProperty(QGraphicsItem* item);
 protected:
+    virtual void openOnlineSceneItems();
+    virtual void delOnlineSceneItems();
+    virtual void addOnlineIconItem(HBaseObj* pObj,bool del = false);//obj->item
+    virtual void newOnlineIconObj();//新建obj
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent);
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent);
     virtual void drawBackground(QPainter *painter, const QRectF &rect);
@@ -43,7 +46,7 @@ signals:
     void mousePosChanged(QPointF logPos);
 
 public:
-    HOnlineMgr* pOnlineMgr;
+    HWfSystemMgr* m_pWfSystemMgr;
     HIconLineItem* line;
     HIconRectItem* rectangle;
     HIconEllipseItem* ellipse;
@@ -61,4 +64,4 @@ public:
     QList<HIconGraphicsItem*> dragMoveItems;
 };
 
-#endif // HGRAPHEDITORSCENE_H
+#endif // HONLINESCENE_H

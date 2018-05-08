@@ -1,6 +1,6 @@
 ﻿#include "honlinescene.h"
-#include "honlinemgr.h"
-#include "honlinedoc.h"
+#include "hwfsystemmgr.h"
+#include "hwfsystemdoc.h"
 #include "hicongraphicsitem.h"
 #include "hiconlineitem.h"
 #include "hiconrectitem.h"
@@ -19,8 +19,8 @@
 #include "hiconsymbol.h"
 #include "hgraph.h"
 #include <QMimeData>
-HOnlineScene::HOnlineScene(HOnlineMgr *mgr)
-    :pOnlineMgr(mgr)
+HOnlineScene::HOnlineScene(HWfSystemMgr *mgr)
+    :m_pWfSystemMgr(mgr)
 {
     //setAcceptDraps(true);
     complex = 0;
@@ -35,17 +35,22 @@ HOnlineScene::HOnlineScene(HOnlineMgr *mgr)
     text = 0;
     select = 0;
     group = 0;
+    if(m_pWfSystemMgr)
+        setSceneRect(m_pWfSystemMgr->getLogicRect());
+    setSceneRect(QRectF(0,0,600,800));
 }
 
 void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
-    if(NULL == pOnlineMgr)
-        return;
+    //if(NULL == m_pWfSystemMgr)
+   //     return;
     painter->save();
     painter->setBrush(backgroundBrush());
     QGraphicsScene::drawBackground(painter,rect);
 
-    HGraph* pGraph = pOnlineMgr->onlineDoc()->getCurGraph();
+    HGraph* pGraph = NULL;
+    if(m_pWfSystemMgr && m_pWfSystemMgr->wfSystemDoc())
+        pGraph = m_pWfSystemMgr->wfSystemDoc()->getCurGraph();
     QColor clr;
     if(pGraph)
     {
@@ -55,7 +60,7 @@ void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
     {
         clr = QColor(Qt::darkGray);
     }
-    QRectF rectF = pOnlineMgr->getLogicRect();
+    QRectF rectF = QRectF(0,0,600,800);//m_pWfSystemMgr->getLogicRect();
     painter->fillRect(rectF,clr);
     painter->restore();
 }
@@ -63,8 +68,8 @@ void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
 
 void HOnlineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
-    if(!pOnlineMgr->onlineDoc() || !pOnlineMgr->onlineDoc()->getCurGraph())
-        return;
+   // if(!pOnlineMgr->onlineDoc() || !pOnlineMgr->onlineDoc()->getCurGraph())
+   //     return;
     QGraphicsScene::mouseDoubleClickEvent(mouseEvent);
 }
 
@@ -92,7 +97,7 @@ void HOnlineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 void HOnlineScene::newOnlineIconObj()
 {
-    if(!pOnlineMgr)
+    if(!m_pWfSystemMgr)
         return;
 }
 
@@ -233,9 +238,9 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
 
 void HOnlineScene::openOnlineSceneItems()
 {
-    if(!pOnlineMgr)
+    if(!m_pWfSystemMgr)
         return;
-    if(!pOnlineMgr->onlineDoc())
+    /*if(!pOnlineMgr->onlineDoc())
         return;
     HGraph* pGraph = pOnlineMgr->onlineDoc()->getCurGraph();
     if(!pGraph)
@@ -247,7 +252,7 @@ void HOnlineScene::openOnlineSceneItems()
         if(!pObj)
             continue;
         addOnlineIconItem(pObj,true);
-    }
+    }*/
 }
 
 /*

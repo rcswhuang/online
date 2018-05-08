@@ -2,6 +2,10 @@
 #define HONLINEVIEW_H
 
 #include <QGraphicsView>
+/*
+ * 五防系统view基类,又是画面浏览基类
+ * 操作票窗口内的view、模板编辑窗口的view都是继承它
+*/
 class HOnlineView : public QGraphicsView
 {
     Q_OBJECT

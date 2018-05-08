@@ -1,17 +1,17 @@
-﻿#include "honlinemgr.h"
+﻿#include "hwfsystemmgr.h"
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QScrollBar>
 #include "honlineview.h"
-#include "honlinedoc.h"
+#include "hwfsystemdoc.h"
 #include "honlinescene.h"
 #include "hgraph.h"
 //图形文件管理总类
-HOnlineMgr::HOnlineMgr()
+HWfSystemMgr::HWfSystemMgr()
     :logicRectF(-500,-500,1000,1000)
 {
-    pOnlineDoc = new HOnlineDoc(this);
-    Q_ASSERT(pOnlineDoc);
+    m_wfSystemDoc = new HWfSystemDoc(this);
+    Q_ASSERT(m_wfSystemDoc);
 
    // pCommand = new QUndoStack(this);
 
@@ -24,34 +24,36 @@ HOnlineMgr::HOnlineMgr()
     logicRectF.setWidth(width-2);
     logicRectF.setHeight(height-100/2);
 
-    pOnlineScene = new HOnlineScene(this);
-    pOnlineView = NULL;
-    drawShape = enumSelection;
+    //pOnlineScene = new HOnlineScene(this);
+    //pOnlineView = NULL;
+   // drawShape = enumSelection;
 
 }
 
 //启动时加载数据库
-void HOnlineMgr::loadStation()
+void HWfSystemMgr::loadStation()
 {
-    if(!pOnlineDoc)
+    if(!m_wfSystemDoc)
         return;
-    pOnlineDoc->loadStation();
+    m_wfSystemDoc->loadStation();
 }
 
 //启动时加载画面信息
-void HOnlineMgr::loadGraphs()
+void HWfSystemMgr::loadGraphs()
 {
-    if(!pOnlineDoc)
+    if(!m_wfSystemDoc)
         return;
-    pOnlineDoc->loadAllGraph();
+    m_wfSystemDoc->loadAllGraph();
 }
 
-HOnlineScene* HOnlineMgr::onlineScene()
+/*
+HOnlineScene* HWfSystemMgr::onlineScene()
 {
     return pOnlineScene;
 }
-
-void HOnlineMgr::setOnlineView(HOnlineView* view)
+*/
+/*
+void HWfSystemMgr::setOnlineView(HOnlineView* view)
 {
     pOnlineView = view;
     pOnlineView->setScene(pOnlineScene);
@@ -74,65 +76,68 @@ void HOnlineMgr::setOnlineView(HOnlineView* view)
     {
         pBar->setSliderPosition(pBar->minimum());
     }
-}
-
-HOnlineView* HOnlineMgr::onlineView()
+}*/
+/*
+HOnlineView* HWfSystemMgr::onlineView()
 {
     return pOnlineView;
 }
+*/
 
-HOnlineDoc* HOnlineMgr::onlineDoc()
+HWfSystemDoc* HWfSystemMgr::wfSystemDoc()
 {
-    return pOnlineDoc;
+    return m_wfSystemDoc;
 }
 
 //设置逻辑界面大小
-void HOnlineMgr::setLogicRect(const QRectF& rect)
+void HWfSystemMgr::setLogicRect(const QRectF& rect)
 {
     logicRectF = rect;
 }
 
-QRectF HOnlineMgr::getLogicRect()
+QRectF HWfSystemMgr::getLogicRect()
 {
     return logicRectF;
 }
 
 //判断graph文件名是否存在
-bool HOnlineMgr::findGraphByName(const QString& graphName)
+bool HWfSystemMgr::findGraphByName(const QString& graphName)
 {
-    if(!pOnlineDoc)
+    if(!m_wfSystemDoc)
         return false;
-    HGraph* graph = pOnlineDoc->findGraph(graphName);
+    HGraph* graph = m_wfSystemDoc->findGraph(graphName);
     if(!graph)
         return false;
     return true;
 }
 
-bool HOnlineMgr::Open(const QString& graphName,int id)
+bool HWfSystemMgr::Open(const QString& graphName,int id)
 {
-    if(!pOnlineDoc)
+    if(!m_wfSystemDoc)
         return false;
-    return pOnlineDoc->openGraph(graphName,id);
+    return m_wfSystemDoc->openGraph(graphName,id);
 }
 
 
-void HOnlineMgr::refreshView()
+/*
+void HWfSystemMgr::refreshView()
 {
     if(!pOnlineView)
         return;
     pOnlineView->refresh();
 }
 
-void HOnlineMgr::openOnlineScene()
+void HWfSystemMgr::openOnlineScene()
 {
     if(!pOnlineScene)
         return;
     pOnlineScene->openOnlineSceneItems();
 }
 
-void HOnlineMgr::clearOnlineSceneItem()
+void HWfSystemMgr::clearOnlineSceneItem()
 {
     if(!pOnlineScene)
         return;
     pOnlineScene->delOnlineSceneItems();
 }
+*/

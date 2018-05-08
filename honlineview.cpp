@@ -3,7 +3,7 @@
 HOnlineView::HOnlineView(QWidget *parent)
     :QGraphicsView (parent)
 {
-    setAcceptDrops(true);
+    setAcceptDrops(false);
     //setDragMode(QGraphicsView::ScrollHandDrag);
     setCacheMode(QGraphicsView::CacheBackground);//背景缓存渲染时间
     setRubberBandSelectionMode(Qt::ContainsItemShape);//选择拖拽部分

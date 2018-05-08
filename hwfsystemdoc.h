@@ -1,7 +1,8 @@
-﻿#ifndef HONLINEDOC_H
-#define HONLINEDOC_H
+﻿#ifndef HWFSYSTEMDOC_H
+#define HWFSYSTEMDOC_H
 
 #include <QObject>
+#include <QList>
 class HStation;
 class HBaseObj;
 class HIconGraphicsItem;
@@ -9,7 +10,7 @@ class HIconTemplate;
 class QDomElement;
 class HStation;
 class HGraph;
-class HOnlineMgr;
+class HWfSystemMgr;
 
 /*
  * 初始化 加载所有厂站的信息，所有画面的信息，所有模板的信息(考虑启动画面)
@@ -18,11 +19,11 @@ class HOnlineMgr;
  *临时HGraph的内容提供给view/scene,供显示。
  * 打开画面，删除都是如此，代码此处实现，可以供其他对象调用对应接口
 */
-class HOnlineDoc : QObject
+class HWfSystemDoc : QObject
 {
 public:
-    HOnlineDoc(HOnlineMgr* mgr);
-    virtual ~HOnlineDoc();
+    HWfSystemDoc(HWfSystemMgr* mgr);
+    virtual ~HWfSystemDoc();
 
 public:
     //加载厂站信息
@@ -64,11 +65,11 @@ public:
 
 protected:
 
-    HOnlineMgr* pOnlineMgr;
+    HWfSystemMgr* m_pWfSystemMgr;
 
     //当前文件
     HGraph* pCurGraph;
 
 };
 
-#endif // HGRAPHEDITORDOC_H
+#endif // HWFSYSTEMDOC_H

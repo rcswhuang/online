@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>HOnlineMainWindow</class>
- <widget class="QMainWindow" name="HOnlineMainWindow">
+ <class>wfSystemWindow</class>
+ <widget class="QMainWindow" name="wfSystemWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -20,92 +20,24 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>836</width>
-     <height>23</height>
-    </rect>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
    </property>
-   <widget class="QMenu" name="menuFile_F">
-    <property name="title">
-     <string>File(&amp;F)</string>
-    </property>
-    <addaction name="actionOpen"/>
-    <addaction name="actionPrint"/>
-   </widget>
-   <widget class="QMenu" name="menuView_V">
-    <property name="title">
-     <string>View(&amp;V)</string>
-    </property>
-    <addaction name="actionZoomin"/>
-    <addaction name="actionZoomout"/>
-    <addaction name="actionZoom"/>
-    <addaction name="actionZoomsame"/>
-   </widget>
-   <widget class="QMenu" name="menuTool_T">
-    <property name="title">
-     <string>Tool(&amp;T)</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuWindow_w">
-    <property name="title">
-     <string>Window(&amp;w)</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuHelp_H">
-    <property name="title">
-     <string>Help(&amp;H)</string>
-    </property>
-   </widget>
-   <addaction name="menuFile_F"/>
-   <addaction name="menuView_V"/>
-   <addaction name="menuTool_T"/>
-   <addaction name="menuWindow_w"/>
-   <addaction name="menuHelp_H"/>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+    <enum>BottomToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionOpen"/>
-   <addaction name="actionPrint"/>
-   <addaction name="separator"/>
-   <addaction name="actionZoomin"/>
-   <addaction name="actionZoomout"/>
-   <addaction name="actionZoom"/>
-   <addaction name="actionZoomsame"/>
-   <addaction name="separator"/>
+   <addaction name="actionOnline"/>
+   <addaction name="actionOrder"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="dockWidgetContents">
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <property name="spacing">
-      <number>2</number>
-     </property>
-     <property name="leftMargin">
-      <number>2</number>
-     </property>
-     <property name="topMargin">
-      <number>2</number>
-     </property>
-     <property name="rightMargin">
-      <number>2</number>
-     </property>
-     <property name="bottomMargin">
-      <number>2</number>
-     </property>
-    </layout>
-   </widget>
+   <widget class="QWidget" name="dockWidgetContents"/>
   </widget>
   <action name="actionOpen">
    <property name="icon">
@@ -159,6 +91,22 @@
    </property>
    <property name="text">
     <string>zoomsame</string>
+   </property>
+  </action>
+  <action name="actionOnline">
+   <property name="text">
+    <string>online</string>
+   </property>
+   <property name="toolTip">
+    <string>在线浏览</string>
+   </property>
+  </action>
+  <action name="actionOrder">
+   <property name="text">
+    <string>order</string>
+   </property>
+   <property name="toolTip">
+    <string>模拟开票</string>
    </property>
   </action>
  </widget>

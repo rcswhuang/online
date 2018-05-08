@@ -17,21 +17,38 @@ INCLUDEPATH += \
              ../include/H5IconHelp \
 
 SOURCES += main.cpp\
-        honlinemainwindow.cpp \
-    honlinetreewidget.cpp \
-    honlinemgr.cpp \
-    honlinescene.cpp \
     honlineview.cpp \
-    honlinedoc.cpp
+    hpreviewwindow.cpp \
+    #htemplatewindow.cpp \
+    #hwfsystemtview.cpp \
+    #htemplateview.cpp \
+    hwfsystemwindow.cpp \
+    honlinewindow.cpp \
+    hwfsystemdoc.cpp \
+    hwfsystemmgr.cpp \
+    honlinescene.cpp \
+    honlinetreewidget.cpp \
+    hoperorderview.cpp
 
-HEADERS  += honlinemainwindow.h \
-    honlinetreewidget.h \
-    honlinemgr.h \
+HEADERS  += \
     honlineview.h \
+    #htemplatewindow.h \
+    #hwfsystemtview.h \
+    #htemplateview.h \
+    hwfsystemwindow.h \
+    honlinewindow.h \
+    hwfsystemdoc.h \
+    hoperorderwindow.h \
+    hoperorderview.h \
     honlinescene.h \
-    honlinedoc.h
+    honlinetreewidget.h \
+    hwfsystemmgr.h
 
-FORMS    += onlinemainwindow.ui
+FORMS    += \
+    templatewindow.ui \
+    wfsystemwindow.ui \
+    onlinewindow.ui \
+    operorderwindow.ui
 
 RESOURCES += \
     images.qrc

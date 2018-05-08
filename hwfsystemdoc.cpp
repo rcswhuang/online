@@ -1,6 +1,6 @@
-﻿#include "honlinedoc.h"
+﻿#include "hwfsystemdoc.h"
 #include "publicdata.h"
-#include "honlinemgr.h"
+#include "hwfsystemmgr.h"
 #include "hgraph.h"
 #include "hicontemplate.h"
 #include "hstation.h"
@@ -10,19 +10,19 @@
 #include <QFileInfoList>
 #include <QProcessEnvironment>
 //图形文件存储类
-HOnlineDoc::HOnlineDoc(HOnlineMgr* mgr)
-    :pOnlineMgr(mgr)
+HWfSystemDoc::HWfSystemDoc(HWfSystemMgr* mgr)
+    :m_pWfSystemMgr(mgr)
 {
     pCurGraph = NULL;
 }
 
-HOnlineDoc::~HOnlineDoc()
+HWfSystemDoc::~HWfSystemDoc()
 {
 
 }
 
 //加载厂站信息
-void HOnlineDoc::loadStation()
+void HWfSystemDoc::loadStation()
 {
     //读取厂站信息
     /*
@@ -59,7 +59,7 @@ void HOnlineDoc::loadStation()
 
 
 //厂站ID获取厂站
-HStation* HOnlineDoc::getStation(quint16 wStationID)
+HStation* HWfSystemDoc::getStation(quint16 wStationID)
 {
     for(int i = 0; i < pStationList.count();i++)
     {
@@ -71,7 +71,7 @@ HStation* HOnlineDoc::getStation(quint16 wStationID)
 }
 
 //厂站地址获取厂站
-HStation* HOnlineDoc::getRtu(quint16 wStationAddress)
+HStation* HWfSystemDoc::getRtu(quint16 wStationAddress)
 {
     for(int i = 0; i < pStationList.count();i++)
     {
@@ -83,14 +83,14 @@ HStation* HOnlineDoc::getRtu(quint16 wStationAddress)
 }
 
 //索引厂站
-HStation* HOnlineDoc::findStation(int nIndex)
+HStation* HWfSystemDoc::findStation(int nIndex)
 {
     return pStationList.value(nIndex);
 }
 
 
 //加载画面信息
-void HOnlineDoc::loadAllGraph()
+void HWfSystemDoc::loadAllGraph()
 {
     HGraphHelper::Instance()->loadAllGraph(&pGraphList);
 
@@ -98,19 +98,14 @@ void HOnlineDoc::loadAllGraph()
     pCurGraph = findRootGraph();
 }
 
-void HOnlineDoc::saveAllGraph()
-{
-    HGraphHelper::Instance()->saveAllGraph(&pGraphList,getCurGraph());
-}
-
 //查找根画面
-HGraph* HOnlineDoc::findRootGraph()
+HGraph* HWfSystemDoc::findRootGraph()
 {
     HGraph* pRootGraph = NULL;
     for(int i = 0; i < pGraphList.count();i++)
     {
         HGraph* pGraph = (HGraph*)pGraphList[i];
-        if(pGraph && pGraph->bStart)
+        if(pGraph /*&& pGraph->bStart*/)
         {
             pRootGraph = pGraph;
             break;
@@ -120,7 +115,7 @@ HGraph* HOnlineDoc::findRootGraph()
 }
 
 //按照ID查找画面
-HGraph* HOnlineDoc::findGraph(int graphID)
+HGraph* HWfSystemDoc::findGraph(int graphID)
 {
     HGraph *graph = NULL;
     QList<HGraph*>::Iterator graphIterator;
@@ -133,7 +128,7 @@ HGraph* HOnlineDoc::findGraph(int graphID)
     return NULL;
 }
 
-HGraph* HOnlineDoc::findGraph(const QString& graphName)
+HGraph* HWfSystemDoc::findGraph(const QString& graphName)
 {
     HGraph *graph = NULL;
     QList<HGraph*>::Iterator graphIterator;
@@ -147,7 +142,7 @@ HGraph* HOnlineDoc::findGraph(const QString& graphName)
 }
 
 //打开画面
-bool HOnlineDoc::openGraph(const QString& name,const int id)
+bool HWfSystemDoc::openGraph(const QString& name,const int id)
 {
     HGraph* graph = findGraph(id);
     if(!graph)
@@ -156,7 +151,7 @@ bool HOnlineDoc::openGraph(const QString& name,const int id)
     return true;
 }
 
-HGraph* HOnlineDoc::getCurGraph()
+HGraph* HWfSystemDoc::getCurGraph()
 {
     return pCurGraph;
 }

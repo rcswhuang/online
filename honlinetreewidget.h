@@ -4,7 +4,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 
-class HOnlineMgr;
+class HWfSystemMgr;
 class QContextMenuEvent;
 class HOnlineTreeWidgetItem:public QTreeWidgetItem
 {
@@ -24,14 +24,11 @@ class HOnlineTreeWidget : public QTreeWidget
 {
     Q_OBJECT
 public:
-    HOnlineTreeWidget(HOnlineMgr *pMgr);
+    HOnlineTreeWidget(HWfSystemMgr *pMgr);
     ~HOnlineTreeWidget();
 public:
     //初始化树结构
     void initGraphTreeWidget();
-
-
-
 public slots:
 
     //打开画面
@@ -43,7 +40,7 @@ public slots:
 signals:
     void graphOpen(const QString&,const int graphID);
 protected:
-    HOnlineMgr* pOnlineMgr;
+    HWfSystemMgr* m_pWfSystemMgr;
     int nPreGraphID;
 };
 

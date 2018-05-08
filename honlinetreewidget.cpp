@@ -1,7 +1,7 @@
 ﻿#include "honlinetreewidget.h"
 #include <QContextMenuEvent>
-#include "honlinemgr.h"
-#include "honlinedoc.h"
+#include "hwfsystemmgr.h"
+#include "hwfsystemdoc.h"
 #include "hgraph.h"
 #include <QMenu>
 #include <QInputDialog>
@@ -48,8 +48,8 @@ int HOnlineTreeWidgetItem::getGraphTreeID()
 
 ///////////////////////////////////////////////////////HOnlineTreeWidget////////////////////////////////////
 
-HOnlineTreeWidget::HOnlineTreeWidget(HOnlineMgr *pMgr)
-    :pOnlineMgr(pMgr)
+HOnlineTreeWidget::HOnlineTreeWidget(HWfSystemMgr *pMgr)
+    :m_pWfSystemMgr(pMgr)
 {
     nPreGraphID = (int)-1;
     setRootIsDecorated(true);
@@ -71,7 +71,7 @@ void HOnlineTreeWidget::initGraphTreeWidget()
     addTopLevelItem(rootItem);
     //expandItem(rootItem);
 
-    HOnlineDoc* doc = pOnlineMgr->onlineDoc();
+    HWfSystemDoc* doc = m_pWfSystemMgr->wfSystemDoc();
     if(!doc) return;
     QList<HGraph*> graphList = doc->pGraphList;
     for(int i = 0; i < graphList.count();i++)

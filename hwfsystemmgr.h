@@ -1,15 +1,18 @@
-﻿#ifndef HONLINEMGR_H
-#define HONLINEMGR_H
+﻿#ifndef HWFSYSTEMMGR_H
+#define HWFSYSTEMMGR_H
 
 #include <QObject>
 #include <QRectF>
 #include "hiconapi.h"
-class HOnlineScene;
-class HOnlineView;
-class HOnlineDoc;
+
 class HIconGraphicsItem;
 class HBaseObj;
 class HGraph;
+
+class HOnlineWindow;
+class HOperOrderWindow;
+class HWfSystemDoc;
+//class HTemplateWindow;
 
 /*
  * 图形绘图工具 管理总类，对各种管理类之间的转换调用进行控制。
@@ -17,18 +20,11 @@ class HGraph;
  * 彼此之间的调用都在这里进行转换。
  *
 */
-class HOnlineMgr : public QObject
+class HWfSystemMgr : public QObject
 {
     Q_OBJECT
 public:
-    HOnlineMgr();
-
-
-    //
-    HOnlineScene* onlineScene();
-    virtual void setOnlineView(HOnlineView* view);
-    HOnlineView* onlineView();
-    HOnlineDoc* onlineDoc();
+    HWfSystemMgr();
 
 public:
 
@@ -49,6 +45,8 @@ public:
 
     QRectF getLogicRect();
 
+    HWfSystemDoc* wfSystemDoc();
+    /*
     //刷新view
     void refreshView();
 
@@ -57,20 +55,16 @@ public:
 
     //清除online上的item
     void clearOnlineSceneItem();
-
+*/
 
 protected:
-    HOnlineDoc* pOnlineDoc;
-
-    HOnlineScene* pOnlineScene;
-
-    HOnlineView* pOnlineView;
 
 private:
     QRectF logicRectF;  //scene的大小
-    HGraph* pTempGraph; //临时画面文件
     QString strGraphFile;
+    HWfSystemDoc* m_wfSystemDoc;
+
 
 };
 
-#endif // HGRAPHEDITORMGR_H
+#endif // HWFSYSTEMMGR_H
