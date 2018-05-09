@@ -37,7 +37,6 @@ protected:
     virtual void openOnlineSceneItems();
     virtual void delOnlineSceneItems();
     virtual void addOnlineIconItem(HBaseObj* pObj,bool del = false);//obj->item
-    virtual void newOnlineIconObj();//新建obj
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent);
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent);
     virtual void drawBackground(QPainter *painter, const QRectF &rect);

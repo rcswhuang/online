@@ -69,8 +69,6 @@ void HWfSystemWindow::createOnlineWindow()
     //还需要设置一下sceneRect的大小
 
     //connect()
-
-
 }
 
 /* 1.刷新树形界面，保证树形打开的是根画面，
@@ -80,18 +78,22 @@ void HWfSystemWindow::createOnlineWindow()
 void HWfSystemWindow::initOnlineMainWindow()
 {
     //左边树结构
-    m_pOnlineTreeWidget = new HOnlineTreeWidget(NULL);
+    m_pOnlineTreeWidget = new HOnlineTreeWidget(m_pWfSystemMgr);
     ui->dockWidget->setWidget(m_pOnlineTreeWidget);
     connect(m_pOnlineTreeWidget,SIGNAL(graphOpen(const QString&,const int)),this,SLOT(Open(const QString&,const int)));//打开
 }
 
 /*
+ * 函数:Open()
+ * 功能:打开某一幅画面
+ * 备注:只针对画面浏览窗口
+*/
 void HWfSystemWindow::Open(const QString &graphName, const int graphID)
 {
-    if(!m_pOnlineMgr)
+    if(!m_pWfSystemMgr)
         return;
-    m_pOnlineMgr->clearOnlineSceneItem();
-    m_pOnlineMgr->Open(graphName,graphID);
-    m_pOnlineMgr->openOnlineScene();
-    m_pOnlineMgr->refreshView();
-}*/
+    m_pWfSystemMgr->clearOnlineSceneItem();
+    m_pWfSystemMgr->Open(graphName,graphID);
+    m_pWfSystemMgr->openOnlineScene();
+    m_pWfSystemMgr->refreshOnlineView();
+}

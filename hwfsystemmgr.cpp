@@ -119,25 +119,25 @@ bool HWfSystemMgr::Open(const QString& graphName,int id)
 }
 
 
-/*
-void HWfSystemMgr::refreshView()
+
+void HWfSystemMgr::refreshOnlineView()
 {
-    if(!pOnlineView)
+    if(!m_pOnlineWindow)
         return;
-    pOnlineView->refresh();
+    m_pOnlineWindow->refresh();
 }
 
 void HWfSystemMgr::openOnlineScene()
 {
-    if(!pOnlineScene)
+    if(!m_pOnlineWindow)
         return;
-    pOnlineScene->openOnlineSceneItems();
+    m_pOnlineWindow->openOnlineSceneItems();
 }
 
 void HWfSystemMgr::clearOnlineSceneItem()
 {
-    if(!pOnlineScene)
+    if(!m_pOnlineWindow)
         return;
-    pOnlineScene->delOnlineSceneItems();
+    m_pOnlineWindow->delOnlineSceneItems();
 }
-*/
+

@@ -95,12 +95,6 @@ void HOnlineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 }
 
-void HOnlineScene::newOnlineIconObj()
-{
-    if(!m_pWfSystemMgr)
-        return;
-}
-
 /*
  * 函数说明:加载图元到OnlineScene上面
  * 参数:pObj--图元 bdel：是否删除
@@ -109,11 +103,14 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
 {
     DRAWSHAPE drawShape = pObj->getShapeType();
     int nZValue = pObj->getStackOrder();
+    //所有items不能具有seleced或者move的功能
     if(drawShape == enumLine)
     {
         line = new HIconLineItem(QLineF(((HLine*) pObj)->getHeadPoint(),((HLine*)pObj)->getTailPoint()));
         line->setItemObj(pObj);
         line->setZValue(nZValue);
+        line->setFlag(QGraphicsItem::ItemIsMovable,false);
+        line->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(line);
 
     }
@@ -123,6 +120,8 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         rectangle = new HIconRectItem(pObj1->getObjRect());
         rectangle->setItemObj(pObj);
         rectangle->setZValue(nZValue);
+        rectangle->setFlag(QGraphicsItem::ItemIsMovable,false);
+        rectangle->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(rectangle);
     }
     else if(drawShape == enumEllipse)
@@ -131,6 +130,8 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         ellipse = new HIconEllipseItem(pObj1->getObjRect());
         ellipse->setItemObj(pObj);
         ellipse->setZValue(nZValue);
+        ellipse->setFlag(QGraphicsItem::ItemIsMovable,false);
+        ellipse->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(ellipse);
     }
     else if(drawShape == enumCircle)
@@ -139,6 +140,8 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         circle = new HIconCircleItem(pObj1->getObjRect());
         circle->setItemObj(pObj);
         circle->setZValue(nZValue);
+        circle->setFlag(QGraphicsItem::ItemIsMovable,false);
+        circle->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(circle);
     }
     else if(drawShape == enumPolygon)
@@ -147,6 +150,8 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         polygon = new HIconPolygonItem(pObj1->pylist);
         polygon->setItemObj(pObj);
         polygon->setZValue(nZValue);
+        polygon->setFlag(QGraphicsItem::ItemIsMovable,false);
+        polygon->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(polygon);
     }
     else if(drawShape == enumPolyline)
@@ -155,6 +160,8 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         polyline = new HIconPolylineItem(pObj1->pylist);
         polyline->setItemObj(pObj);
         polyline->setZValue(nZValue);
+        polyline->setFlag(QGraphicsItem::ItemIsMovable,false);
+        polyline->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(polyline);
     }
     else if(drawShape == enumArc)
@@ -163,6 +170,8 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         arc = new HIconArcItem(pObj1->getObjRect());
         arc->setItemObj(pObj);
         arc->setZValue(nZValue);
+        arc->setFlag(QGraphicsItem::ItemIsMovable,false);
+        arc->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(arc);
     }
     else if(drawShape == enumPie)
@@ -171,6 +180,8 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         pie = new HIconPieItem(pObj1->getObjRect());
         pie->setItemObj(pObj);
         pie->setZValue(nZValue);
+        pie->setFlag(QGraphicsItem::ItemIsMovable,false);
+        pie->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(pie);
     }
     else if(drawShape == enumText)
@@ -179,6 +190,8 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         text = new HIconTextItem(pObj1->getObjRect());
         text->setItemObj(pObj);
         text->setZValue(nZValue);
+        text->setFlag(QGraphicsItem::ItemIsMovable,false);
+        text->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(text);
     }
     else if(drawShape == enumComplex)
@@ -187,10 +200,10 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         complex = new HIconComplexItem(pObj1->getObjRect().normalized());
         complex->setItemObj(pObj);
         complex->setZValue(nZValue);
+        complex->setFlag(QGraphicsItem::ItemIsMovable,false);
+        complex->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(complex);
     }
-    //if(complex != 0)
-     //   complex->setAcceptDrops(true);
     if(bdel)
     {
         if(drawShape == enumLine && line != 0)
@@ -240,9 +253,9 @@ void HOnlineScene::openOnlineSceneItems()
 {
     if(!m_pWfSystemMgr)
         return;
-    /*if(!pOnlineMgr->onlineDoc())
+    if(!m_pWfSystemMgr->wfSystemDoc())
         return;
-    HGraph* pGraph = pOnlineMgr->onlineDoc()->getCurGraph();
+    HGraph* pGraph = m_pWfSystemMgr->wfSystemDoc()->getCurGraph();
     if(!pGraph)
         return;
     QList<HBaseObj*> pObjList = pGraph->getObjList();
@@ -252,15 +265,21 @@ void HOnlineScene::openOnlineSceneItems()
         if(!pObj)
             continue;
         addOnlineIconItem(pObj,true);
-    }*/
+    }
 }
 
-/*
- * 函数说明:在显示即将打开的画面之前，删除当前画面图元
-*/
+/*********************************
+ * 功能:清除scene上的所有item
+**********************************/
 void HOnlineScene::delOnlineSceneItems()
 {
-
+    foreach (QGraphicsItem *item, items())
+    {
+        HIconGraphicsItem* pItem = qgraphicsitem_cast<HIconGraphicsItem*>(item);
+        if(!pItem) continue;
+        removeItem(pItem);
+        delete pItem;
+     }
 }
 
 void HOnlineScene::setItemCursor(QGraphicsSceneMouseEvent *mouseEvent)

@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     hwfsystemmgr.cpp \
     honlinescene.cpp \
     honlinetreewidget.cpp \
-    hoperorderview.cpp
+    hoperorderview.cpp \
+    honlinerefreshthread.cpp
 
 HEADERS  += \
     honlineview.h \
@@ -42,7 +43,8 @@ HEADERS  += \
     hoperorderview.h \
     honlinescene.h \
     honlinetreewidget.h \
-    hwfsystemmgr.h
+    hwfsystemmgr.h \
+    honlinerefreshthread.h
 
 FORMS    += \
     templatewindow.ui \

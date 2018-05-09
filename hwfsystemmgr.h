@@ -27,6 +27,9 @@ public:
     HWfSystemMgr();
 
 public:
+    HWfSystemDoc* wfSystemDoc();
+    HOnlineWindow* onlineWindow();
+public:
 
     //启动时加载数据库
     void loadStation();
@@ -45,17 +48,18 @@ public:
 
     QRectF getLogicRect();
 
-    HWfSystemDoc* wfSystemDoc();
-    /*
-    //刷新view
-    void refreshView();
+
+
+public:
+    //刷新online view
+    void refreshOnlineView();
 
     //加载online图元
     void openOnlineScene();
 
     //清除online上的item
     void clearOnlineSceneItem();
-*/
+
 
 protected:
 
@@ -63,6 +67,7 @@ private:
     QRectF logicRectF;  //scene的大小
     QString strGraphFile;
     HWfSystemDoc* m_wfSystemDoc;
+    HOnlineWindow* m_pOnlineWindow;
 
 
 };
