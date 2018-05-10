@@ -4,14 +4,18 @@
 #include <QObject>
 #include <QRectF>
 #include "hiconapi.h"
+class QMdiArea;
+
 
 class HIconGraphicsItem;
 class HBaseObj;
 class HGraph;
+class HWfSystemDoc;
 
+class HWfSystemWindow;
 class HOnlineWindow;
 class HOperOrderWindow;
-class HWfSystemDoc;
+
 //class HTemplateWindow;
 
 /*
@@ -31,8 +35,11 @@ public:
     HOnlineWindow* onlineWindow();
 public:
 
-    //启动时加载数据库
-    void loadStation();
+    //启动各种dll库
+    void loadInstance();
+
+    //退出dll库
+    void exitInstance();
 
     //启动时加载画面信息
     void loadGraphs();
@@ -40,34 +47,22 @@ public:
     //判断graph文件名是否存在
     bool findGraphByName(const QString&);
 
-    //打开画面
-    bool Open(const QString&,int);
-
-    //设置逻辑界面大小
-    void setLogicRect(const QRectF& rect);
-
-    QRectF getLogicRect();
-
-
+//创建窗口类
+public:
+    //创建在线浏览窗口
+    void createOnlineWindow(QMdiArea* area);
 
 public:
-    //刷新online view
-    void refreshOnlineView();
-
-    //加载online图元
-    void openOnlineScene();
-
-    //清除online上的item
-    void clearOnlineSceneItem();
+    void openOnlineGraph(const QString &graphName, const int graphID);
 
 
 protected:
 
 private:
-    QRectF logicRectF;  //scene的大小
     QString strGraphFile;
     HWfSystemDoc* m_wfSystemDoc;
     HOnlineWindow* m_pOnlineWindow;
+    HWfSystemWindow* m_pWfSystemWindow;
 
 
 };

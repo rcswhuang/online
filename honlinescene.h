@@ -24,15 +24,16 @@ class HIconGraphicsItem;
 class HIconItemGroup;
 class HBaseObj;
 class HWfSystemMgr;
-
+class HGraph;
 class HOnlineScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    HOnlineScene(HWfSystemMgr *mgr);
+    HOnlineScene();
 public:
     void setItemCursor(QGraphicsSceneMouseEvent *mouseEvent);
     void setItemProperty(QGraphicsItem* item);
+    void setGraph(HGraph* graph);
 protected:
     virtual void openOnlineSceneItems();
     virtual void delOnlineSceneItems();
@@ -45,7 +46,7 @@ signals:
     void mousePosChanged(QPointF logPos);
 
 public:
-    HWfSystemMgr* m_pWfSystemMgr;
+    HGraph* m_pGraph;
     HIconLineItem* line;
     HIconRectItem* rectangle;
     HIconEllipseItem* ellipse;

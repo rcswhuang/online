@@ -29,6 +29,9 @@ public:
     HOnlineWindow(HWfSystemMgr* mgr,QWidget *parent = 0);
     ~HOnlineWindow();
 public:
+
+    void openOnlineGraph(const QString &graphName, const int graphID);
+
     //刷新online view
     void refreshOnlineView();
 
@@ -40,9 +43,12 @@ public:
 
     //设置HIconObj绘制相关属性
     void updateIconObj(HIconObj* pObj);
+
 public slots:
     void updateOnlineView();
 
+private:
+    QRect logicRect;
 private:
     Ui::HOnlineWindow *ui;
     HOnlineRefreshThread* m_pOnlineRefreshThread;

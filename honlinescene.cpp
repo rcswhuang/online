@@ -19,8 +19,7 @@
 #include "hiconsymbol.h"
 #include "hgraph.h"
 #include <QMimeData>
-HOnlineScene::HOnlineScene(HWfSystemMgr *mgr)
-    :m_pWfSystemMgr(mgr)
+HOnlineScene::HOnlineScene()
 {
     //setAcceptDraps(true);
     complex = 0;
@@ -35,9 +34,7 @@ HOnlineScene::HOnlineScene(HWfSystemMgr *mgr)
     text = 0;
     select = 0;
     group = 0;
-    if(m_pWfSystemMgr)
-        setSceneRect(m_pWfSystemMgr->getLogicRect());
-    setSceneRect(QRectF(0,0,600,800));
+    m_pGraph = NULL;
 }
 
 void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
@@ -60,7 +57,7 @@ void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
     {
         clr = QColor(Qt::darkGray);
     }
-    QRectF rectF = QRectF(0,0,600,800);//m_pWfSystemMgr->getLogicRect();
+    QRectF rectF = QRectF(0,0,600,800);
     painter->fillRect(rectF,clr);
     painter->restore();
 }
@@ -93,6 +90,11 @@ void HOnlineScene::setItemProperty(QGraphicsItem* item)
 void HOnlineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 
+}
+
+void HOnlineScene::setGraph(HGraph *graph)
+{
+    m_pGraph = graph;
 }
 
 /*

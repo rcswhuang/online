@@ -14,7 +14,7 @@ QT_BEGIN_NAMESPACE
 class QMdiArea;
 class QMdiSubWindow;
 class QDialog;
-
+QT_END_NAMESPACE
 /*
  * 五防系统主窗口
  * 包含状态栏、规则、公式、网络
@@ -31,7 +31,7 @@ public:
 
 public:
     void initOnlineMainWindow();
-    //void createOnlineWindow();
+    QMdiArea* getMdiArea(){return mdiArea;}
 
 public slots:
     void Open(const QString&,const int);
@@ -44,7 +44,8 @@ private:
 private:
     Ui::wfSystemWindow *ui;
     QMdiArea *mdiArea;
-    HOnlineWindow* m_pOnlineWindow;
+    //在线预览窗口
+    //预演窗口、模板编辑窗口、网络报文监视窗口、串口报文监视窗口
     HWfSystemMgr* m_pWfSystemMgr;
     HOnlineTreeWidget* m_pOnlineTreeWidget;
 

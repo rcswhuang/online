@@ -57,12 +57,13 @@ RESOURCES += \
 
 unix{
 
-    LIBS += -L ../lib -lH5IconGui -lH5IconHelp -ldatafile
+    LIBS += -L ../lib -lH5IconGui -lH5IconHelp -ldatafile -lkernel
 }
 
 win32{
    LIBS += \
         ../lib/H5IconGui.lib \
         ../lib/H5IconHelp.lib \
-        ../lib/datafile.lib
+        ../lib/datafile.lib \
+        ../lib/kernel.lib
 }

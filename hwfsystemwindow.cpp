@@ -10,7 +10,6 @@ HWfSystemWindow::HWfSystemWindow(QWidget *parent) :
     QMainWindow(parent),ui(new Ui::wfSystemWindow)
 {
     ui->setupUi(this);
-    m_pOnlineWindow = NULL;
     mdiArea = new QMdiArea;
     mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -26,7 +25,6 @@ HWfSystemWindow::HWfSystemWindow(HWfSystemMgr *mgr,QWidget *parent) :
     QMainWindow(parent),ui(new Ui::wfSystemWindow),m_pWfSystemMgr(mgr)
 {
      ui->setupUi(this);
-     m_pOnlineWindow = NULL;
      mdiArea = new QMdiArea;
      mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
      mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -58,14 +56,7 @@ QMdiSubWindow *HWfSystemWindow::findMdiChild(const QString &fileName) const
 
 void HWfSystemWindow::createOnlineWindow()
 {
-    if(m_pOnlineWindow)
-    {
-        m_pOnlineWindow->showMaximized();
-        return;
-    }
-    m_pOnlineWindow = new HOnlineWindow;
-    mdiArea->addSubWindow(m_pOnlineWindow);
-    m_pOnlineWindow->showMaximized();
+
     //还需要设置一下sceneRect的大小
 
     //connect()
@@ -92,8 +83,5 @@ void HWfSystemWindow::Open(const QString &graphName, const int graphID)
 {
     if(!m_pWfSystemMgr)
         return;
-    m_pWfSystemMgr->clearOnlineSceneItem();
-    m_pWfSystemMgr->Open(graphName,graphID);
-    m_pWfSystemMgr->openOnlineScene();
-    m_pWfSystemMgr->refreshOnlineView();
+    m_pWfSystemMgr->openOnlineGraph(graphName,graphID);
 }

@@ -26,23 +26,11 @@ public:
     virtual ~HWfSystemDoc();
 
 public:
-    //加载厂站信息
-    void loadStation();
-
-    //厂站ID获取厂站
-    HStation* getStation(quint16 wStationID);
-
-    //厂站地址获取厂站
-    HStation* getRtu(quint16 wStationAddress);
-
-    //索引厂站
-    HStation* findStation(int nIndex);
-
     //加载画面信息
     void loadAllGraph();
 
     //查找根画面
-    HGraph* findRootGraph();
+    HGraph* getRootGraph();
 
     //查找画面
     HGraph* findGraph(int graphID);
