@@ -47,8 +47,13 @@ public:
     //判断graph文件名是否存在
     bool findGraphByName(const QString&);
 
+    //打开画面
+    bool Open(const QString& graphName,int id);
 //创建窗口类
 public:
+    //设置MainWindow窗口
+    void setWfSystemWindow(HWfSystemWindow* pWindow);
+
     //创建在线浏览窗口
     void createOnlineWindow(QMdiArea* area);
 

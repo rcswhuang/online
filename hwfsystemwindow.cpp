@@ -6,6 +6,7 @@
 #include "honlinewindow.h"
 #include <QMdiArea>
 #include <QMdiSubWindow>
+#include "hkerneltest.h"
 HWfSystemWindow::HWfSystemWindow(QWidget *parent) :
     QMainWindow(parent),ui(new Ui::wfSystemWindow)
 {
@@ -25,6 +26,7 @@ HWfSystemWindow::HWfSystemWindow(HWfSystemMgr *mgr,QWidget *parent) :
     QMainWindow(parent),ui(new Ui::wfSystemWindow),m_pWfSystemMgr(mgr)
 {
      ui->setupUi(this);
+     m_pWfSystemMgr->setWfSystemWindow(this);
      mdiArea = new QMdiArea;
      mdiArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
      mdiArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -32,8 +34,9 @@ HWfSystemWindow::HWfSystemWindow(HWfSystemMgr *mgr,QWidget *parent) :
 
      setWindowTitle(tr("MDI"));
      setUnifiedTitleAndToolBarOnMac(true);
-
+     initMainWindow();
      connect(ui->actionOnline,SIGNAL(triggered(bool)),this,SLOT(createOnlineWindow()));
+     connect(ui->actionOrder,SIGNAL(triggered(bool)),this,SLOT(createKernelTest()));
 }
 
 HWfSystemWindow::~HWfSystemWindow()
@@ -62,11 +65,17 @@ void HWfSystemWindow::createOnlineWindow()
     //connect()
 }
 
+void HWfSystemWindow::createKernelTest()
+{
+    HKernelTest* kertest = new HKernelTest;
+    kertest->show();
+}
+
 /* 1.刷新树形界面，保证树形打开的是根画面，
  * 2.树形根画面节点调用后，发射打开画面信号，调MainWindow打开窗口，显示画面
  * 3.显示画面窗口调用scene来完成
  */
-void HWfSystemWindow::initOnlineMainWindow()
+void HWfSystemWindow::initMainWindow()
 {
     //左边树结构
     m_pOnlineTreeWidget = new HOnlineTreeWidget(m_pWfSystemMgr);

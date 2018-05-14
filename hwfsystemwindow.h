@@ -30,12 +30,13 @@ public:
     ~HWfSystemWindow();
 
 public:
-    void initOnlineMainWindow();
+    void initMainWindow();
     QMdiArea* getMdiArea(){return mdiArea;}
 
 public slots:
     void Open(const QString&,const int);
     void createOnlineWindow();
+    void createKernelTest();
 
 private:
      QDialog *activeMdiChild() const;

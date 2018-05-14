@@ -2,7 +2,7 @@
 #define HONLINEWINDOW_H
 
 #include <QDialog>
-
+#include <QList>
 namespace Ui {
 class HOnlineWindow;
 }
@@ -18,7 +18,6 @@ class HOnlineRefreshThread;
 class HIconObj;
 QT_BEGIN_NAMESPACE
 class QTimer;
-class QList;
 QT_END_NAMESPACE
 class HOnlineWindow : public QDialog
 {
@@ -29,6 +28,8 @@ public:
     HOnlineWindow(HWfSystemMgr* mgr,QWidget *parent = 0);
     ~HOnlineWindow();
 public:
+    //初始化窗口
+    void initOnlineWindow();
 
     void openOnlineGraph(const QString &graphName, const int graphID);
 
@@ -44,18 +45,28 @@ public:
     //设置HIconObj绘制相关属性
     void updateIconObj(HIconObj* pObj);
 
-public slots:
-    void updateOnlineView();
+    //设置scene窗口
+    QRect getLogicRect();
 
+    //获取view
+    HOnlineView* onlineView();
+
+    //获取scene
+    HOnlineScene* onlineScene();
+
+public slots:
+    void updatePoints();
+
+public:
+    QList<HIconObj*> m_pIconObjList;
 private:
     QRect logicRect;
-private:
     Ui::HOnlineWindow *ui;
     HOnlineRefreshThread* m_pOnlineRefreshThread;
     HOnlineView* m_pOnlineView;
     HOnlineScene* m_pOnlineScene;
     HWfSystemMgr* m_pWfSystemMgr;
-    QList<HIconObj*> m_pIconObjList;
+
 };
 
 #endif // HONLINEWINDOW_H

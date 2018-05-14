@@ -11,6 +11,7 @@
 #include "hkernelapi.h"
 #include <QTimer>
 #include <QScrollBar>
+#include <QDesktopWidget>
 HOnlineWindow::HOnlineWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::HOnlineWindow)
@@ -44,7 +45,7 @@ void HOnlineWindow::initOnlineWindow()
     m_pOnlineView->setLineWidth(0);
     ui->verticalLayout->addWidget(m_pOnlineView);
 
-    m_pOnlineScene = new HOnlineScene();
+    m_pOnlineScene = new HOnlineScene(this);
     m_pOnlineView->setScene(m_pOnlineScene);
     m_pOnlineView->setSceneRect(logicRect);
 
@@ -60,9 +61,31 @@ void HOnlineWindow::initOnlineWindow()
     }
 
     //启动线程
-    m_pOnlineRefreshThread = new m_pOnlineRefreshThread(this);
+    m_pOnlineRefreshThread = new HOnlineRefreshThread(this);
+    //m_pOnlineRefreshThread->start();
+    connect(m_pOnlineRefreshThread, &HOnlineRefreshThread::update, this, &HOnlineWindow::updatePoints);
+    //connect(m_pThread, &HUpdateThread::finished, workerThread, &QObject::deleteLater);
     m_pOnlineRefreshThread->start();
+}
 
+//设置scene窗口
+QRect HOnlineWindow::getLogicRect()
+{
+    return logicRect;
+}
+
+HOnlineView* HOnlineWindow::onlineView()
+{
+ if(m_pOnlineView)
+     return m_pOnlineView;
+ return NULL;
+}
+
+HOnlineScene* HOnlineWindow::onlineScene()
+{
+    if(m_pOnlineScene)
+        return m_pOnlineScene;
+    return NULL;
 }
 
 void HOnlineWindow::openOnlineGraph(const QString &graphName, const int graphID)
@@ -72,15 +95,25 @@ void HOnlineWindow::openOnlineGraph(const QString &graphName, const int graphID)
     HGraph* graph = m_pWfSystemMgr->wfSystemDoc()->findGraph(graphID);
     if(!graph) return;
     m_pOnlineScene->setGraph(graph);
+    //int nWidth = graph->getGraphWidth();
+    //int nHeight = graph->getGraphHeight();
+    //logicRect = QRect(-nWidth/2,-nHeight/2,nWidth,nHeight);
+
+    int width = qApp->desktop()->screen()->width();
+    int height = qApp->desktop()->screen()->height();
+    logicRect.setX(0-(width-2)/2);
+    logicRect.setY(0-(height-100)/2);
+    logicRect.setWidth(width-2);
+    logicRect.setHeight(height-100/2);
+
+
+    //测试下面语句是否可行 如不可行,用下下面语句 ----huangw
+    //m_pOnlineView->updateSceneRect(logicRect);
+    m_pOnlineView->setSceneRect(logicRect);
     clearOnlineSceneItem();
     openOnlineScene();
-    int nWidth = graph->getGraphWidth();
-    int nHeight = graph->getGraphHeight();
-    logicRect = QRect(-nWidth/2,-nHeight/2,nWidth,nHeight);
-    //测试下面语句是否可行 如不可行,用下下面语句 ----huangw
-    m_pOnlineView->updateSceneRect(logicRect);
-    //m_pOnlineView->setSceneRect(logicRect);
-    //refreshOnlineView();
+
+    refreshOnlineView();
 }
 
 //刷新online view
@@ -107,86 +140,7 @@ void HOnlineWindow::clearOnlineSceneItem()
     m_pOnlineScene->delOnlineSceneItems();
 }
 
-void HOnlineWindow::updateOnlineView()
+void HOnlineWindow::updatePoints()
 {
-    /*
-     * 在绘制HGraph文件过程中，m_pIconObjList只增加遥信遥测部分
-    */
-    for(int i = 0; i < m_pIconObjList.count();i++)
-    {
-        HIconObj* iconObj = (HIconObj*)m_pIconObjList[i];
-        if(iconObj)
-        {
-            updateIconObj(iconObj);
-        }
-    }
-}
-
-void HOnlineWindow::updateIconObj(HIconObj *pObj)
-{
-    if(!pObj)
-        return;
-    //可以剥离出来独立dll来处理
-    int nCurPattern = pObj->getIconSymbol()->getCurrentPattern();
-    quint8 btType = (quint8)pObj->getObjType();
-    quint16 wStation = pObj->getDynamicObj()->getDBStation();
-    quint16 wPoint = pObj->getDynamicObj()->getDBPoint();
-    ushort wAttr = pObj->getDynamicObj()->getDBAttr();
-    //遥信
-    if(TEMPLATE_TYPE_DIGITAL == btType)
-    {
-        DBHANDLE dbHandle = getDbHandle(wStation,btType,wPoint,TYPE_DB_REALTIME);
-        if(!isValidDbHandle(dbHandle))
-            return;
-
-        int nPFlags;
-        if(!getAttr(dbHandle,ATTR_DGT_PFLAG,&nPFlags))
-            return;
-        int m_nPFlags = 0;
-        if(nPFlags & ENABLE_REPAIR)
-            m_nPFlags = ENABLE_REPAIR;
-
-        int nRFlags;
-        if(!getAttr(dbHandle,ATTR_DGT_RFLAG,&nRFlags))
-            return;
-
-        int m_nRFlags = 0;
-        if(nRFlags & RESULT_MANUAL)
-            m_nRFlags = RESULT_MANUAL;
-        else if(nRFlags & RESULT_ACK)
-            m_nRFlags = RESULT_ACK;
-        else if(nRFlags & RESULT_CHANGE)
-            m_nRFlags = RESULT_CHANGE;
-        else if(nRFlags & RESULT_ACCIDENT)
-            m_nRFlags = RESULT_ACCIDENT;
-
-        quint8 m_btValue = 0;
-        if(wAttr == ATTR_DGT_VALUE)
-        {
-            if(!getAttr(dbHandle,ATTR_DGT_VALUE,&m_btValue))
-                return false;
-
-        }
-        else if(ATTR_DGT_4_STATE_VALUE == wAttr)
-        {
-            if(!getAttr(dbHandle,ATTR_DGT_4_STATE_VALUE,&m_btValue))
-                return false;
-        }
-
-        if(m_btValue > 3) m_btValue = 3;
-
-        if(ENABLE_REPAIR == m_nPFlags)
-        {
-            pObj->setLineColorName(Qt::red);
-            pObj->setFillColorName(Qt::red);
-        }
-
-        //关键地方，画面变位的地方
-        if(nCurPattern != m_btValue)
-        {
-            pObj->getIconSymbol()->setCurrentPattern(m_btValue);
-            //是不是需要刷新pObj这块区域
-            m_pOnlineView->invalidateScene(pObj->boundingRect(),QGraphicsScene::ItemLayer);
-        }
-    }
+    m_pOnlineView->refresh();
 }

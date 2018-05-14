@@ -18,8 +18,10 @@
 #include "hiconapi.h"
 #include "hiconsymbol.h"
 #include "hgraph.h"
+#include "honlinewindow.h"
 #include <QMimeData>
-HOnlineScene::HOnlineScene()
+HOnlineScene::HOnlineScene(HOnlineWindow* parent)
+    :m_pOnlineWindow(parent)
 {
     //setAcceptDraps(true);
     complex = 0;
@@ -45,9 +47,7 @@ void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setBrush(backgroundBrush());
     QGraphicsScene::drawBackground(painter,rect);
 
-    HGraph* pGraph = NULL;
-    if(m_pWfSystemMgr && m_pWfSystemMgr->wfSystemDoc())
-        pGraph = m_pWfSystemMgr->wfSystemDoc()->getCurGraph();
+    HGraph* pGraph = m_pGraph;
     QColor clr;
     if(pGraph)
     {
@@ -57,7 +57,7 @@ void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
     {
         clr = QColor(Qt::darkGray);
     }
-    QRectF rectF = QRectF(0,0,600,800);
+    QRectF rectF = m_pOnlineWindow->getLogicRect();
     painter->fillRect(rectF,clr);
     painter->restore();
 }
@@ -205,6 +205,7 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         complex->setFlag(QGraphicsItem::ItemIsMovable,false);
         complex->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(complex);
+        m_pOnlineWindow->m_pIconObjList.append(pObj1);//要析构
     }
     if(bdel)
     {
@@ -253,11 +254,7 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
 
 void HOnlineScene::openOnlineSceneItems()
 {
-    if(!m_pWfSystemMgr)
-        return;
-    if(!m_pWfSystemMgr->wfSystemDoc())
-        return;
-    HGraph* pGraph = m_pWfSystemMgr->wfSystemDoc()->getCurGraph();
+    HGraph* pGraph = m_pGraph;
     if(!pGraph)
         return;
     QList<HBaseObj*> pObjList = pGraph->getObjList();

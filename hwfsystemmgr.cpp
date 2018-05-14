@@ -11,7 +11,6 @@
 #include "honlinewindow.h"
 //图形文件管理总类
 HWfSystemMgr::HWfSystemMgr()
-    :logicRectF(-500,-500,1000,1000)
 {
     m_wfSystemDoc = new HWfSystemDoc(this);
     Q_ASSERT(m_wfSystemDoc);
@@ -64,6 +63,12 @@ bool HWfSystemMgr::findGraphByName(const QString& graphName)
     return true;
 }
 
+
+void HWfSystemMgr::setWfSystemWindow(HWfSystemWindow* pWindow)
+{
+    m_pWfSystemWindow = pWindow;
+}
+
 //创建画面浏览窗口
 void HWfSystemMgr::createOnlineWindow(QMdiArea* mdiArea)
 {
@@ -72,7 +77,7 @@ void HWfSystemMgr::createOnlineWindow(QMdiArea* mdiArea)
         m_pOnlineWindow->showMaximized();
         return;
     }
-    m_pOnlineWindow = new HOnlineWindow;
+    m_pOnlineWindow = new HOnlineWindow(this);
     mdiArea->addSubWindow(m_pOnlineWindow);
     m_pOnlineWindow->showMaximized();
 }

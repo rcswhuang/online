@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     honlinescene.cpp \
     honlinetreewidget.cpp \
     hoperorderview.cpp \
-    honlinerefreshthread.cpp
+    honlinerefreshthread.cpp \
+    hkerneltest.cpp \
+    hupdatethread.cpp
 
 HEADERS  += \
     honlineview.h \
@@ -44,20 +46,24 @@ HEADERS  += \
     honlinescene.h \
     honlinetreewidget.h \
     hwfsystemmgr.h \
-    honlinerefreshthread.h
+    honlinerefreshthread.h \
+    hkerneltest.h \
+    hupdatethread.h
 
 FORMS    += \
     templatewindow.ui \
     wfsystemwindow.ui \
     onlinewindow.ui \
-    operorderwindow.ui
+    operorderwindow.ui \
+    hkerneltest.ui
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    pixmaps.qrc
 
 unix{
 
-    LIBS += -L ../lib -lH5IconGui -lH5IconHelp -ldatafile -lkernel
+    LIBS += -L ../lib -lH5IconGui -lH5IconHelp -ldatafile -lkernel -ldatafile
 }
 
 win32{
@@ -65,5 +71,6 @@ win32{
         ../lib/H5IconGui.lib \
         ../lib/H5IconHelp.lib \
         ../lib/datafile.lib \
-        ../lib/kernel.lib
+        ../lib/kernel.lib \
+        ../lib/datafile.lib
 }

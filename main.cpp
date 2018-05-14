@@ -1,5 +1,7 @@
-#include "hwfsystemwindow.h"
+﻿#include "hwfsystemwindow.h"
 #include <QApplication>
+#include <QTextCodec>
+#include <QSplashScreen>
 #include "hwfsystemmgr.h"
 int main(int argc, char *argv[])
 {
@@ -7,7 +9,7 @@ int main(int argc, char *argv[])
     //2.
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     QApplication a(argc, argv);
-    QPixmap pixmap(":/pixmaps/splash.png");
+    QPixmap pixmap(":/pixmaps/splash.jpg");
 
     QSplashScreen *splash = new QSplashScreen(pixmap);
     splash->show();
