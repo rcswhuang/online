@@ -205,7 +205,7 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
         complex->setFlag(QGraphicsItem::ItemIsMovable,false);
         complex->setFlag(QGraphicsItem::ItemIsSelectable,false);
         addItem(complex);
-        m_pOnlineWindow->m_pIconObjList.append(pObj1);//要析构
+        m_pOnlineWindow->m_pIconObjList.append(pObj1);//要析构--huangw
     }
     if(bdel)
     {

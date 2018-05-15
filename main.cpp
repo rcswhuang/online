@@ -19,6 +19,10 @@ int main(int argc, char *argv[])
     splash->showMessage(QStringLiteral("加载实时库信息"));
     qApp->processEvents();
 
+    pMgr->loadIconTemplates();
+    splash->showMessage(QStringLiteral("加载模板库信息"));
+    qApp->processEvents();
+
     //loading all graphs
     pMgr->loadGraphs();
     splash->showMessage(QStringLiteral("加载所有画面信息"));

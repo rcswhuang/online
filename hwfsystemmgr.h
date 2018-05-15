@@ -41,6 +41,9 @@ public:
     //退出dll库
     void exitInstance();
 
+    //启动时加载模板列表
+    void loadIconTemplates();
+
     //启动时加载画面信息
     void loadGraphs();
 

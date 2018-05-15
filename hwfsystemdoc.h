@@ -26,11 +26,17 @@ public:
     virtual ~HWfSystemDoc();
 
 public:
+    //加载模板列表
+    void loadIconTemplate();
+
     //加载画面信息
     void loadAllGraph();
 
     //查找根画面
     HGraph* getRootGraph();
+
+    //寻找模板 uuid
+    HIconTemplate* findIconTemplate(const QString& uuid);
 
     //查找画面
     HGraph* findGraph(int graphID);
@@ -44,12 +50,18 @@ public:
     //获取当前画面
     HGraph* getCurGraph();
 
+    //刷新模板列表
+    void updateGraphList();
+
 public:
     //厂站列表
     QList<HStation*> pStationList;
 
     //图形文件列表
     QList<HGraph*> pGraphList;
+
+    //模板列表
+    QList<HIconTemplate*> m_pIconTemplateList;
 
 protected:
 

@@ -87,7 +87,7 @@ void HWork::on_time()
                 {
                     pObj->getIconSymbol()->setCurrentPattern(m_btValue);
                     //是不是需要刷新pObj这块区域
-                    if(m_pOnlineWindow && m_pOnlineWindow->onlineView())
+                    if(m_pOnlineWindow && m_pOnlineWindow->onlineScene())
                         m_pOnlineWindow->onlineScene()->invalidate(pObj->boundingRect(),QGraphicsScene::ItemLayer);
                 }
             }

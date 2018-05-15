@@ -39,6 +39,13 @@ void HWfSystemMgr::exitInstance()
 
 }
 
+void HWfSystemMgr::loadIconTemplates()
+{
+    if(!m_wfSystemDoc)
+        return;
+    m_wfSystemDoc->loadIconTemplate();
+}
+
 //启动时加载画面信息
 void HWfSystemMgr::loadGraphs()
 {

@@ -323,7 +323,7 @@ void HKernelTest::setValue()
     {
         int row = item->column();
         if(item->column() != 3) return;
-        int nValue = QInputDialog::getInt(this, tr("遥信"),tr("遥信值:"),0,0,1);
+        int nValue = QInputDialog::getInt(this, tr("遥信"),tr("遥信值:"),0,0,3);
         //item->setText(QString("%1").arg(nValue));
         quint16 wDigitalID = item->data(Qt::UserRole).toUInt();
         for(int i = 0; i < m_pDigitalList.count();i++)
