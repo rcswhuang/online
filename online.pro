@@ -63,7 +63,7 @@ RESOURCES += \
 
 unix{
 
-    LIBS += -L ../lib -lH5IconGui -lH5IconHelp -ldatafile -lkernel -ldatafile
+    LIBS += -L ../lib -lH5IconGui -lH5IconHelp -ldatafile -lkernel
 }
 
 win32{

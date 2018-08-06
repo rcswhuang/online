@@ -3,7 +3,7 @@
 #include "hwfsystemdoc.h"
 #include "hicongraphicsitem.h"
 #include "hiconlineitem.h"
-#include "hiconrectitem.h"
+#include "hiconrectangleitem.h"
 #include "hiconellipseitem.h"
 #include "hiconcircleitem.h"
 #include "hiconpolygonitem.h"

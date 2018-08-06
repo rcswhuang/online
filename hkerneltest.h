@@ -26,9 +26,9 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
 
 public slots:
-        void typeChanged();
-        void setValue();
-          void update();
+    void typeChanged();
+    void setValue();
+    void update();
 public:
     QList<DIGITAL*> m_pDigitalList;
     QList<ANALOGUE*> m_pAnalogueList;
