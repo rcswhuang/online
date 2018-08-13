@@ -1,16 +1,16 @@
 #include "honlinerefreshthread.h"
-#include "honlinewindow.h"
+#include "hgraphframe.h"
 #include "publicdata.h"
 #include "hgraph.h"
 #include "hiconobj.h"
 #include "hiconsymbol.h"
 #include "honlinerefreshthread.h"
 #include "hkernelapi.h"
-#include "honlinescene.h"
+#include "hgraphicsscene.h"
 #include <QDebug>
 #include <QTimer>
 
-HWork::HWork(HOnlineWindow* pParent)
+HWork::HWork(HGraphFrame* pParent)
 :m_pOnlineWindow(pParent)
 {
 
@@ -97,7 +97,7 @@ void HWork::on_time()
 }
 
 
-HOnlineRefreshThread::HOnlineRefreshThread(HOnlineWindow* ow)
+HOnlineRefreshThread::HOnlineRefreshThread(HGraphFrame* ow)
     :m_pOnlineWindow(ow)
 {
 

@@ -5,10 +5,10 @@
 #include <QMdiArea>
 #include "hkernelapi.h"
 #include "hwfsystemdoc.h"
-#include "honlinescene.h"
+#include "hgraphicsscene.h"
 #include "hgraph.h"
 #include "hwfsystemwindow.h"
-#include "honlinewindow.h"
+#include "hgraphframe.h"
 //图形文件管理总类
 HWfSystemMgr::HWfSystemMgr()
 {
@@ -84,7 +84,7 @@ void HWfSystemMgr::createOnlineWindow(QMdiArea* mdiArea)
         m_pOnlineWindow->showMaximized();
         return;
     }
-    m_pOnlineWindow = new HOnlineWindow(this);
+    m_pOnlineWindow = new HGraphFrame(this);
     mdiArea->addSubWindow(m_pOnlineWindow);
     m_pOnlineWindow->showMaximized();
 }

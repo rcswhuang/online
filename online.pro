@@ -17,45 +17,49 @@ INCLUDEPATH += \
              ../include/H5IconHelp \
 
 SOURCES += main.cpp\
-    honlineview.cpp \
     hpreviewwindow.cpp \
     #htemplatewindow.cpp \
     #hwfsystemtview.cpp \
     #htemplateview.cpp \
     hwfsystemwindow.cpp \
-    honlinewindow.cpp \
     hwfsystemdoc.cpp \
     hwfsystemmgr.cpp \
-    honlinescene.cpp \
     honlinetreewidget.cpp \
     hoperorderview.cpp \
     honlinerefreshthread.cpp \
     hkerneltest.cpp \
-    hupdatethread.cpp
+    hupdatethread.cpp \
+    hopsheet.cpp \
+    hgraphicsscene.cpp \
+    hgraphicsview.cpp \
+    hframe.cpp \
+    hgraphframe.cpp
 
 HEADERS  += \
-    honlineview.h \
     #htemplatewindow.h \
     #hwfsystemtview.h \
     #htemplateview.h \
     hwfsystemwindow.h \
-    honlinewindow.h \
     hwfsystemdoc.h \
     hoperorderwindow.h \
     hoperorderview.h \
-    honlinescene.h \
     honlinetreewidget.h \
     hwfsystemmgr.h \
     honlinerefreshthread.h \
     hkerneltest.h \
-    hupdatethread.h
+    hupdatethread.h \
+    hopsheet.h \
+    hgraphicsscene.h \
+    hgraphicsview.h \
+    hframe.h \
+    hgraphframe.h
 
 FORMS    += \
     templatewindow.ui \
     wfsystemwindow.ui \
-    onlinewindow.ui \
     operorderwindow.ui \
-    hkerneltest.ui
+    hkerneltest.ui \
+    graphframe.ui
 
 RESOURCES += \
     images.qrc \

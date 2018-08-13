@@ -1,4 +1,4 @@
-﻿#include "honlinescene.h"
+﻿#include "hgraphicsscene.h"
 #include "hwfsystemmgr.h"
 #include "hwfsystemdoc.h"
 #include "hicongraphicsitem.h"
@@ -18,9 +18,9 @@
 #include "hiconapi.h"
 #include "hiconsymbol.h"
 #include "hgraph.h"
-#include "honlinewindow.h"
+#include "hgraphframe.h"
 #include <QMimeData>
-HOnlineScene::HOnlineScene(HOnlineWindow* parent)
+HGraphicsScene::HGraphicsScene(HGraphFrame* parent)
     :m_pOnlineWindow(parent)
 {
     //setAcceptDraps(true);
@@ -39,7 +39,7 @@ HOnlineScene::HOnlineScene(HOnlineWindow* parent)
     m_pGraph = NULL;
 }
 
-void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
+void HGraphicsScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     //if(NULL == m_pWfSystemMgr)
    //     return;
@@ -63,14 +63,14 @@ void HOnlineScene::drawBackground(QPainter *painter, const QRectF &rect)
 }
 
 
-void HOnlineScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent)
+void HGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent)
 {
    // if(!pOnlineMgr->onlineDoc() || !pOnlineMgr->onlineDoc()->getCurGraph())
    //     return;
     QGraphicsScene::mouseDoubleClickEvent(mouseEvent);
 }
 
-void HOnlineScene::setItemProperty(QGraphicsItem* item)
+void HGraphicsScene::setItemProperty(QGraphicsItem* item)
 {
     if(!item) return;
     HIconGraphicsItem* pItem = qgraphicsitem_cast<HIconGraphicsItem*>(item);
@@ -87,12 +87,12 @@ void HOnlineScene::setItemProperty(QGraphicsItem* item)
 }
 
 
-void HOnlineScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+void HGraphicsScene::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 
 }
 
-void HOnlineScene::setGraph(HGraph *graph)
+void HGraphicsScene::setGraph(HGraph *graph)
 {
     m_pGraph = graph;
 }
@@ -101,7 +101,7 @@ void HOnlineScene::setGraph(HGraph *graph)
  * 函数说明:加载图元到OnlineScene上面
  * 参数:pObj--图元 bdel：是否删除
 */
-void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
+void HGraphicsScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
 {
     DRAWSHAPE drawShape = pObj->getShapeType();
     int nZValue = pObj->getStackOrder();
@@ -252,7 +252,7 @@ void HOnlineScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
     }
 }
 
-void HOnlineScene::openOnlineSceneItems()
+void HGraphicsScene::openOnlineSceneItems()
 {
     HGraph* pGraph = m_pGraph;
     if(!pGraph)
@@ -270,7 +270,7 @@ void HOnlineScene::openOnlineSceneItems()
 /*********************************
  * 功能:清除scene上的所有item
 **********************************/
-void HOnlineScene::delOnlineSceneItems()
+void HGraphicsScene::delOnlineSceneItems()
 {
     foreach (QGraphicsItem *item, items())
     {
@@ -281,6 +281,6 @@ void HOnlineScene::delOnlineSceneItems()
      }
 }
 
-void HOnlineScene::setItemCursor(QGraphicsSceneMouseEvent *mouseEvent)
+void HGraphicsScene::setItemCursor(QGraphicsSceneMouseEvent *mouseEvent)
 {
 }

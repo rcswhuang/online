@@ -1,9 +1,9 @@
 #include "hwfsystemwindow.h"
 #include "ui_wfsystemwindow.h"
 #include "honlinetreewidget.h"
-#include "honlineview.h"
+#include "hgraphicsview.h"
 #include "hwfsystemmgr.h"
-#include "honlinewindow.h"
+#include "hgraphframe.h"
 #include <QMdiArea>
 #include <QMdiSubWindow>
 #include "hkerneltest.h"

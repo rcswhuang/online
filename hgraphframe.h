@@ -1,10 +1,10 @@
 #ifndef HONLINEWINDOW_H
 #define HONLINEWINDOW_H
 
-#include <QDialog>
+#include "hframe.h"
 #include <QList>
 namespace Ui {
-class HOnlineWindow;
+class graphFrame;
 }
 /*
  * 画面浏览主窗口：两部分
@@ -19,14 +19,14 @@ class HIconObj;
 QT_BEGIN_NAMESPACE
 class QTimer;
 QT_END_NAMESPACE
-class HOnlineWindow : public QDialog
+class HGraphFrame : public HFrame
 {
     Q_OBJECT
 
 public:
-    explicit HOnlineWindow(QWidget *parent = 0);
-    HOnlineWindow(HWfSystemMgr* mgr,QWidget *parent = 0);
-    ~HOnlineWindow();
+    explicit HGraphFrame(QWidget *parent = 0);
+    HGraphFrame(HWfSystemMgr* mgr,QWidget *parent = 0);
+    ~HGraphFrame();
 public:
     //初始化窗口
     void initOnlineWindow();
@@ -61,7 +61,7 @@ public:
     QList<HIconObj*> m_pIconObjList;
 private:
     QRect logicRect;
-    Ui::HOnlineWindow *ui;
+    Ui::graphFrame *ui;
     HOnlineRefreshThread* m_pOnlineRefreshThread;
     HOnlineView* m_pOnlineView;
     HOnlineScene* m_pOnlineScene;

@@ -7,7 +7,7 @@ namespace Ui {
 class wfSystemWindow;
 }
 
-class HOnlineWindow;
+class HGraphFrame;
 class HWfSystemMgr;
 class HOnlineTreeWidget;
 QT_BEGIN_NAMESPACE

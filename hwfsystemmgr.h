@@ -13,7 +13,7 @@ class HGraph;
 class HWfSystemDoc;
 
 class HWfSystemWindow;
-class HOnlineWindow;
+class HGraphFrame;
 class HOperOrderWindow;
 
 //class HTemplateWindow;
@@ -32,7 +32,7 @@ public:
 
 public:
     HWfSystemDoc* wfSystemDoc();
-    HOnlineWindow* onlineWindow();
+    HGraphFrame* onlineWindow();
 public:
 
     //启动各种dll库
@@ -69,7 +69,7 @@ protected:
 private:
     QString strGraphFile;
     HWfSystemDoc* m_wfSystemDoc;
-    HOnlineWindow* m_pOnlineWindow;
+    HGraphFrame* m_pOnlineWindow;
     HWfSystemWindow* m_pWfSystemWindow;
 
 

@@ -1,6 +1,6 @@
-﻿#include "honlineview.h"
+﻿#include "hgraphicsview.h"
 #include <QScrollBar>
-HOnlineView::HOnlineView(QWidget *parent)
+HGraphicsView::HGraphicsView(QWidget *parent)
     :QGraphicsView (parent)
 {
     setAcceptDrops(false);
@@ -12,7 +12,7 @@ HOnlineView::HOnlineView(QWidget *parent)
     viewport()->setMouseTracking(true);
 }
 
-void HOnlineView::refresh()
+void HGraphicsView::refresh()
 {
     QScrollBar* pBar = horizontalScrollBar();
     int hBar = 0;

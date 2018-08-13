@@ -25,12 +25,12 @@ class HIconItemGroup;
 class HBaseObj;
 class HWfSystemMgr;
 class HGraph;
-class HOnlineWindow;
-class HOnlineScene : public QGraphicsScene
+class HGraphFrame;
+class HGraphicsScene : public QGraphicsScene
 {
     Q_OBJECT
 public:
-    HOnlineScene(HOnlineWindow* parent = 0);
+    HGraphicsScene(HGraphFrame* parent = 0);
 public:
     void setItemCursor(QGraphicsSceneMouseEvent *mouseEvent);
     void setItemProperty(QGraphicsItem* item);
@@ -48,7 +48,7 @@ signals:
 
 public:
     HGraph* m_pGraph;
-    HOnlineWindow* m_pOnlineWindow;
+    HGraphFrame* m_pOnlineWindow;
 public:
     HIconLineItem* line;
     HIconRectItem* rectangle;

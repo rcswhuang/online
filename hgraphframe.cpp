@@ -1,8 +1,8 @@
-#include "honlinewindow.h"
-#include "ui_onlinewindow.h"
+#include "hgraphframe.h"
+#include "ui_graphframe.h"
 #include "publicdata.h"
-#include "honlineview.h"
-#include "honlinescene.h"
+#include "hgraphicsview.h"
+#include "hgraphicsscene.h"
 #include "hwfsystemdoc.h"
 #include "hwfsystemmgr.h"
 #include "hgraph.h"
@@ -12,9 +12,9 @@
 #include <QTimer>
 #include <QScrollBar>
 #include <QDesktopWidget>
-HOnlineWindow::HOnlineWindow(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::HOnlineWindow)
+HGraphFrame::HGraphFrame(QWidget *parent) :
+    HFrame(parent),
+    ui(new Ui::graphFrame)
 {
     ui->setupUi(this);
     m_pWfSystemMgr = NULL;
@@ -22,21 +22,21 @@ HOnlineWindow::HOnlineWindow(QWidget *parent) :
     setWindowTitle("画面浏览");
 }
 
-HOnlineWindow::HOnlineWindow(HWfSystemMgr* mgr,QWidget *parent):
-    QDialog(parent),
-    ui(new Ui::HOnlineWindow),m_pWfSystemMgr(mgr)
+HGraphFrame::HGraphFrame(HWfSystemMgr* mgr,QWidget *parent):
+    HFrame(parent),
+    ui(new Ui::graphFrame),m_pWfSystemMgr(mgr)
 {
     ui->setupUi(this);
     logicRect = QRect(-500,-500,1000,1000);
     initOnlineWindow();
 }
 
-HOnlineWindow::~HOnlineWindow()
+HGraphFrame::~HGraphFrame()
 {
     delete ui;
 }
 
-void HOnlineWindow::initOnlineWindow()
+void HGraphFrame::initOnlineWindow()
 {
     m_pOnlineView = new HOnlineView(this);
     m_pOnlineView->setObjectName(QStringLiteral("画图系统"));
@@ -63,32 +63,32 @@ void HOnlineWindow::initOnlineWindow()
     //启动线程
     m_pOnlineRefreshThread = new HOnlineRefreshThread(this);
     //m_pOnlineRefreshThread->start();
-    connect(m_pOnlineRefreshThread, &HOnlineRefreshThread::update, this, &HOnlineWindow::updatePoints);
+    connect(m_pOnlineRefreshThread, &HOnlineRefreshThread::update, this, &HGraphFrame::updatePoints);
     //connect(m_pThread, &HUpdateThread::finished, workerThread, &QObject::deleteLater);
     m_pOnlineRefreshThread->start();
 }
 
 //设置scene窗口
-QRect HOnlineWindow::getLogicRect()
+QRect HGraphFrame::getLogicRect()
 {
     return logicRect;
 }
 
-HOnlineView* HOnlineWindow::onlineView()
+HOnlineView* HGraphFrame::onlineView()
 {
  if(m_pOnlineView)
      return m_pOnlineView;
  return NULL;
 }
 
-HOnlineScene* HOnlineWindow::onlineScene()
+HOnlineScene* HGraphFrame::onlineScene()
 {
     if(m_pOnlineScene)
         return m_pOnlineScene;
     return NULL;
 }
 
-void HOnlineWindow::openOnlineGraph(const QString &graphName, const int graphID)
+void HGraphFrame::openOnlineGraph(const QString &graphName, const int graphID)
 {
     if(!m_pWfSystemMgr || !m_pWfSystemMgr->wfSystemDoc())
         return;
@@ -117,7 +117,7 @@ void HOnlineWindow::openOnlineGraph(const QString &graphName, const int graphID)
 }
 
 //刷新online view
-void HOnlineWindow::refreshOnlineView()
+void HGraphFrame::refreshOnlineView()
 {
     if(!m_pOnlineView)
         return;
@@ -125,7 +125,7 @@ void HOnlineWindow::refreshOnlineView()
 }
 
 //加载online图元
-void HOnlineWindow::openOnlineScene()
+void HGraphFrame::openOnlineScene()
 {
     if(!m_pOnlineScene)
         return;
@@ -133,14 +133,14 @@ void HOnlineWindow::openOnlineScene()
 }
 
 //清除online上的item
-void HOnlineWindow::clearOnlineSceneItem()
+void HGraphFrame::clearOnlineSceneItem()
 {
     if(!m_pOnlineScene)
         return;
     m_pOnlineScene->delOnlineSceneItems();
 }
 
-void HOnlineWindow::updatePoints()
+void HGraphFrame::updatePoints()
 {
     m_pOnlineView->refresh();
 }
