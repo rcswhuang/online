@@ -1,17 +1,17 @@
-#include "honlinerefreshthread.h"
+#include "hgraphfreshthread.h"
 #include "hgraphframe.h"
 #include "publicdata.h"
 #include "hgraph.h"
 #include "hiconobj.h"
 #include "hiconsymbol.h"
-#include "honlinerefreshthread.h"
+#include "hgraphfreshthread.h"
 #include "hkernelapi.h"
 #include "hgraphicsscene.h"
 #include <QDebug>
 #include <QTimer>
 
 HWork::HWork(HGraphFrame* pParent)
-:m_pOnlineWindow(pParent)
+:m_pGraphFrame(pParent)
 {
 
 }
@@ -19,9 +19,9 @@ HWork::HWork(HGraphFrame* pParent)
 void HWork::on_time()
 {
     qDebug()<<"HWork::on_time" << QThread::currentThreadId();
-    for(int i = 0; i < m_pOnlineWindow->m_pIconObjList.count();i++)
+    for(int i = 0; i < m_pGraphFrame->m_pIconObjList.count();i++)
     {
-        HIconObj* pObj = (HIconObj*)m_pOnlineWindow->m_pIconObjList[i];
+        HIconObj* pObj = (HIconObj*)m_pGraphFrame->m_pIconObjList[i];
         if(pObj)
         {
             //updateIconObj(iconObj);
@@ -87,8 +87,8 @@ void HWork::on_time()
                 {
                     pObj->getIconSymbol()->setCurrentPattern(m_btValue);
                     //是不是需要刷新pObj这块区域
-                    if(m_pOnlineWindow && m_pOnlineWindow->onlineScene())
-                        m_pOnlineWindow->onlineScene()->invalidate(pObj->boundingRect(),QGraphicsScene::ItemLayer);
+                    if(m_pGraphFrame && m_pGraphFrame->onlineScene())
+                        m_pGraphFrame->onlineScene()->invalidate(pObj->boundingRect(),QGraphicsScene::ItemLayer);
                 }
             }
         }
@@ -97,13 +97,13 @@ void HWork::on_time()
 }
 
 
-HOnlineRefreshThread::HOnlineRefreshThread(HGraphFrame* ow)
-    :m_pOnlineWindow(ow)
+HGraphRefreshThread::HGraphRefreshThread(HGraphFrame* ow)
+    :m_pGraphFrame(ow)
 {
 
 }
 
-void HOnlineRefreshThread::run()
+void HGraphRefreshThread::run()
 {
     //测试，检查独立进程是否启动工作
     qDebug()<<"HOnlineRefreshThread id" << QThread::currentThreadId();

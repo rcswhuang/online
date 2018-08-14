@@ -36,9 +36,9 @@ public:
     void setItemProperty(QGraphicsItem* item);
     void setGraph(HGraph* graph);
 public:
-    virtual void openOnlineSceneItems();
-    virtual void delOnlineSceneItems();
-    virtual void addOnlineIconItem(HBaseObj* pObj,bool del = false);//obj->item
+    virtual void openGraphicsSceneItems();
+    virtual void delGraphicsSceneItems();
+    virtual void addGraphicsIconItem(HBaseObj* pObj,bool del = false);//obj->item
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* mouseEvent);
     virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent *contextMenuEvent);
     virtual void drawBackground(QPainter *painter, const QRectF &rect);

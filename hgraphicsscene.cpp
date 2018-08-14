@@ -101,7 +101,7 @@ void HGraphicsScene::setGraph(HGraph *graph)
  * 函数说明:加载图元到OnlineScene上面
  * 参数:pObj--图元 bdel：是否删除
 */
-void HGraphicsScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
+void HGraphicsScene::addGraphicsIconItem(HBaseObj* pObj,bool bdel)
 {
     DRAWSHAPE drawShape = pObj->getShapeType();
     int nZValue = pObj->getStackOrder();
@@ -252,7 +252,7 @@ void HGraphicsScene::addOnlineIconItem(HBaseObj* pObj,bool bdel)
     }
 }
 
-void HGraphicsScene::openOnlineSceneItems()
+void HGraphicsScene::openGraphicsSceneItems()
 {
     HGraph* pGraph = m_pGraph;
     if(!pGraph)
@@ -270,7 +270,7 @@ void HGraphicsScene::openOnlineSceneItems()
 /*********************************
  * 功能:清除scene上的所有item
 **********************************/
-void HGraphicsScene::delOnlineSceneItems()
+void HGraphicsScene::delGraphicsSceneItems()
 {
     foreach (QGraphicsItem *item, items())
     {

@@ -17,7 +17,6 @@ INCLUDEPATH += \
              ../include/H5IconHelp \
 
 SOURCES += main.cpp\
-    hpreviewwindow.cpp \
     #htemplatewindow.cpp \
     #hwfsystemtview.cpp \
     #htemplateview.cpp \
@@ -26,14 +25,15 @@ SOURCES += main.cpp\
     hwfsystemmgr.cpp \
     honlinetreewidget.cpp \
     hoperorderview.cpp \
-    honlinerefreshthread.cpp \
     hkerneltest.cpp \
     hupdatethread.cpp \
     hopsheet.cpp \
     hgraphicsscene.cpp \
     hgraphicsview.cpp \
     hframe.cpp \
-    hgraphframe.cpp
+    hgraphframe.cpp \
+    hgraphfreshthread.cpp \
+    hrehearsalframe.cpp
 
 HEADERS  += \
     #htemplatewindow.h \
@@ -41,18 +41,18 @@ HEADERS  += \
     #htemplateview.h \
     hwfsystemwindow.h \
     hwfsystemdoc.h \
-    hoperorderwindow.h \
     hoperorderview.h \
     honlinetreewidget.h \
     hwfsystemmgr.h \
-    honlinerefreshthread.h \
     hkerneltest.h \
     hupdatethread.h \
     hopsheet.h \
     hgraphicsscene.h \
     hgraphicsview.h \
     hframe.h \
-    hgraphframe.h
+    hgraphframe.h \
+    hgraphfreshthread.h \
+    hrehearsalframe.h
 
 FORMS    += \
     templatewindow.ui \

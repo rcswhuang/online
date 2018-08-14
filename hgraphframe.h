@@ -10,11 +10,11 @@ class graphFrame;
  * 画面浏览主窗口：两部分
  * 显示graph
 */
-class HOnlineScene;
-class HOnlineView;
+class HGraphicsScene;
+class HGraphicsView;
 class HWfSystemMgr;
 class HWfSystemDoc;
-class HOnlineRefreshThread;
+class HGraphRefreshThread;
 class HIconObj;
 QT_BEGIN_NAMESPACE
 class QTimer;
@@ -29,18 +29,18 @@ public:
     ~HGraphFrame();
 public:
     //初始化窗口
-    void initOnlineWindow();
+    void initGraphFrame();
 
-    void openOnlineGraph(const QString &graphName, const int graphID);
+    void openGraph(const QString &graphName, const int graphID);
 
     //刷新online view
-    void refreshOnlineView();
+    void refreshGraphicsView();
 
     //加载online图元
-    void openOnlineScene();
+    void openGraphicsScene();
 
     //清除online上的item
-    void clearOnlineSceneItem();
+    void clearGraphicsSceneItem();
 
     //设置HIconObj绘制相关属性
     void updateIconObj(HIconObj* pObj);
@@ -49,10 +49,10 @@ public:
     QRect getLogicRect();
 
     //获取view
-    HOnlineView* onlineView();
+    HGraphicsView* graphicsView();
 
     //获取scene
-    HOnlineScene* onlineScene();
+    HGraphicsScene* graphicsScene();
 
 public slots:
     void updatePoints();
@@ -62,9 +62,9 @@ public:
 private:
     QRect logicRect;
     Ui::graphFrame *ui;
-    HOnlineRefreshThread* m_pOnlineRefreshThread;
-    HOnlineView* m_pOnlineView;
-    HOnlineScene* m_pOnlineScene;
+    HGraphRefreshThread* m_pGraphRefreshThread;
+    HGraphicsView* m_pGraphicsView;
+    HGraphicsScene* m_pGraphicsScene;
     HWfSystemMgr* m_pWfSystemMgr;
 
 };

@@ -6,7 +6,7 @@
 */
 #include <QThread>
 class HGraphFrame;
-class HOnlineRefreshThread;
+class HGraphRefreshThread;
 QT_BEGIN_NAMESPACE
 QT_END_NAMESPACE
 class HWork : public QObject
@@ -17,15 +17,15 @@ public:
 public slots:
     void on_time();
 public:
-    HGraphFrame* m_pOnlineWindow;
-    HOnlineRefreshThread *p_Thread;
+    HGraphFrame* m_pGraphFrame;
+    HGraphRefreshThread *p_Thread;
 };
 
-class HOnlineRefreshThread : public QThread
+class HGraphRefreshThread : public QThread
 {
     Q_OBJECT
 public:
-    HOnlineRefreshThread(HGraphFrame* onlineWindow);
+    HGraphRefreshThread(HGraphFrame* onlineWindow);
 
 public:
     virtual void run();
@@ -34,7 +34,7 @@ signals:
     void update();
 
 private:
-    HGraphFrame* m_pOnlineWindow;
+    HGraphFrame* m_pGraphFrame;
 };
 
 #endif // HONLINEREFRESHTHREAD_H

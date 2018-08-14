@@ -7,7 +7,7 @@
 #include "hwfsystemmgr.h"
 #include "hgraph.h"
 #include "hiconobj.h"
-#include "honlinerefreshthread.h"
+#include "hgraphfreshthread.h"
 #include "hkernelapi.h"
 #include <QTimer>
 #include <QScrollBar>
@@ -18,7 +18,7 @@ HGraphFrame::HGraphFrame(QWidget *parent) :
 {
     ui->setupUi(this);
     m_pWfSystemMgr = NULL;
-    initOnlineWindow();
+    initGraphFrame();
     setWindowTitle("画面浏览");
 }
 
@@ -28,7 +28,7 @@ HGraphFrame::HGraphFrame(HWfSystemMgr* mgr,QWidget *parent):
 {
     ui->setupUi(this);
     logicRect = QRect(-500,-500,1000,1000);
-    initOnlineWindow();
+    initGraphFrame();
 }
 
 HGraphFrame::~HGraphFrame()
@@ -36,36 +36,36 @@ HGraphFrame::~HGraphFrame()
     delete ui;
 }
 
-void HGraphFrame::initOnlineWindow()
+void HGraphFrame::initGraphFrame()
 {
-    m_pOnlineView = new HOnlineView(this);
-    m_pOnlineView->setObjectName(QStringLiteral("画图系统"));
-    m_pOnlineView->setFrameShape(QFrame::NoFrame);
-    m_pOnlineView->setFrameShadow(QFrame::Plain);
-    m_pOnlineView->setLineWidth(0);
-    ui->verticalLayout->addWidget(m_pOnlineView);
+    m_pGraphicsView = new HGraphicsView(this);
+    m_pGraphicsView->setObjectName(QStringLiteral("画图系统"));
+    m_pGraphicsView->setFrameShape(QFrame::NoFrame);
+    m_pGraphicsView->setFrameShadow(QFrame::Plain);
+    m_pGraphicsView->setLineWidth(0);
+    ui->verticalLayout->addWidget(m_pGraphicsView);
 
-    m_pOnlineScene = new HOnlineScene(this);
-    m_pOnlineView->setScene(m_pOnlineScene);
-    m_pOnlineView->setSceneRect(logicRect);
+    m_pGraphicsScene = new HGraphicsScene(this);
+    m_pGraphicsView->setScene(m_pGraphicsScene);
+    m_pGraphicsView->setSceneRect(logicRect);
 
-    QScrollBar* pBar = m_pOnlineView->horizontalScrollBar();
+    QScrollBar* pBar = m_pGraphicsView->horizontalScrollBar();
     if(pBar && pBar->isHidden() == false)
     {
         pBar->setSliderPosition(pBar->minimum());
     }
-    pBar = m_pOnlineView->verticalScrollBar();
+    pBar = m_pGraphicsView->verticalScrollBar();
     if(pBar && pBar->isHidden() == false)
     {
         pBar->setSliderPosition(pBar->minimum());
     }
 
     //启动线程
-    m_pOnlineRefreshThread = new HOnlineRefreshThread(this);
+    m_pGraphRefreshThread = new HGraphRefreshThread(this);
     //m_pOnlineRefreshThread->start();
-    connect(m_pOnlineRefreshThread, &HOnlineRefreshThread::update, this, &HGraphFrame::updatePoints);
+    connect(m_pGraphRefreshThread, &HGraphRefreshThread::update, this, &HGraphFrame::updatePoints);
     //connect(m_pThread, &HUpdateThread::finished, workerThread, &QObject::deleteLater);
-    m_pOnlineRefreshThread->start();
+    m_pGraphRefreshThread->start();
 }
 
 //设置scene窗口
@@ -74,27 +74,27 @@ QRect HGraphFrame::getLogicRect()
     return logicRect;
 }
 
-HOnlineView* HGraphFrame::onlineView()
+HGraphicsView* HGraphFrame::graphicsScene()
 {
- if(m_pOnlineView)
-     return m_pOnlineView;
+ if(m_pGraphicsView)
+     return m_pGraphicsView;
  return NULL;
 }
 
-HOnlineScene* HGraphFrame::onlineScene()
+HGraphicsScene* HGraphFrame::graphicsView()
 {
-    if(m_pOnlineScene)
-        return m_pOnlineScene;
+    if(m_pGraphicsScene)
+        return m_pGraphicsScene;
     return NULL;
 }
 
-void HGraphFrame::openOnlineGraph(const QString &graphName, const int graphID)
+void HGraphFrame::openGraph(const QString &graphName, const int graphID)
 {
     if(!m_pWfSystemMgr || !m_pWfSystemMgr->wfSystemDoc())
         return;
     HGraph* graph = m_pWfSystemMgr->wfSystemDoc()->findGraph(graphID);
     if(!graph) return;
-    m_pOnlineScene->setGraph(graph);
+    m_pGraphicsScene->setGraph(graph);
     //int nWidth = graph->getGraphWidth();
     //int nHeight = graph->getGraphHeight();
     //logicRect = QRect(-nWidth/2,-nHeight/2,nWidth,nHeight);
@@ -109,38 +109,38 @@ void HGraphFrame::openOnlineGraph(const QString &graphName, const int graphID)
 
     //测试下面语句是否可行 如不可行,用下下面语句 ----huangw
     //m_pOnlineView->updateSceneRect(logicRect);
-    m_pOnlineView->setSceneRect(logicRect);
-    clearOnlineSceneItem();
-    openOnlineScene();
+    m_pGraphicsView->setSceneRect(logicRect);
+    clearGraphicsSceneItem();
+    openGraphicsScene();
 
-    refreshOnlineView();
+    refreshGraphicsView();
 }
 
 //刷新online view
-void HGraphFrame::refreshOnlineView()
+void HGraphFrame::refreshGraphicsView()
 {
-    if(!m_pOnlineView)
+    if(!m_pGraphicsView)
         return;
-    m_pOnlineView->refresh();
+    m_pGraphicsView->refresh();
 }
 
 //加载online图元
-void HGraphFrame::openOnlineScene()
+void HGraphFrame::openGraphicsScene()
 {
-    if(!m_pOnlineScene)
+    if(!m_pGraphicsScene)
         return;
-    m_pOnlineScene->openOnlineSceneItems();
+    m_pGraphicsScene->openGraphicsSceneItems();
 }
 
 //清除online上的item
-void HGraphFrame::clearOnlineSceneItem()
+void HGraphFrame::clearGraphicsSceneItem()
 {
-    if(!m_pOnlineScene)
+    if(!m_pGraphicsScene)
         return;
-    m_pOnlineScene->delOnlineSceneItems();
+    m_pGraphicsScene->delGraphicsSceneItems();
 }
 
 void HGraphFrame::updatePoints()
 {
-    m_pOnlineView->refresh();
+    m_pGraphicsView->refresh();
 }
