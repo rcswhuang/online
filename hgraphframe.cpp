@@ -1,5 +1,4 @@
 #include "hgraphframe.h"
-#include "ui_graphframe.h"
 #include "publicdata.h"
 #include "hgraphicsview.h"
 #include "hgraphicsscene.h"
@@ -12,28 +11,23 @@
 #include <QTimer>
 #include <QScrollBar>
 #include <QDesktopWidget>
-HGraphFrame::HGraphFrame(QWidget *parent) :
-    HFrame(parent),
-    ui(new Ui::graphFrame)
+HGraphFrame::HGraphFrame(HFrame *parent) :
+    HFrame(parent)
 {
-    ui->setupUi(this);
     m_pWfSystemMgr = NULL;
     initGraphFrame();
     setWindowTitle("画面浏览");
 }
 
-HGraphFrame::HGraphFrame(HWfSystemMgr* mgr,QWidget *parent):
-    HFrame(parent),
-    ui(new Ui::graphFrame),m_pWfSystemMgr(mgr)
+HGraphFrame::HGraphFrame(HWfSystemMgr* mgr,HFrame *parent):
+    HFrame(parent),m_pWfSystemMgr(mgr)
 {
-    ui->setupUi(this);
     logicRect = QRect(-500,-500,1000,1000);
     initGraphFrame();
 }
 
 HGraphFrame::~HGraphFrame()
 {
-    delete ui;
 }
 
 void HGraphFrame::initGraphFrame()
@@ -43,7 +37,7 @@ void HGraphFrame::initGraphFrame()
     m_pGraphicsView->setFrameShape(QFrame::NoFrame);
     m_pGraphicsView->setFrameShadow(QFrame::Plain);
     m_pGraphicsView->setLineWidth(0);
-    ui->verticalLayout->addWidget(m_pGraphicsView);
+    centerLayout->addWidget(m_pGraphicsView);
 
     m_pGraphicsScene = new HGraphicsScene(this);
     m_pGraphicsView->setScene(m_pGraphicsScene);
@@ -74,14 +68,14 @@ QRect HGraphFrame::getLogicRect()
     return logicRect;
 }
 
-HGraphicsView* HGraphFrame::graphicsScene()
+HGraphicsView* HGraphFrame::graphicsView()
 {
  if(m_pGraphicsView)
      return m_pGraphicsView;
  return NULL;
 }
 
-HGraphicsScene* HGraphFrame::graphicsView()
+HGraphicsScene* HGraphFrame::graphicsScene()
 {
     if(m_pGraphicsScene)
         return m_pGraphicsScene;
@@ -98,7 +92,6 @@ void HGraphFrame::openGraph(const QString &graphName, const int graphID)
     //int nWidth = graph->getGraphWidth();
     //int nHeight = graph->getGraphHeight();
     //logicRect = QRect(-nWidth/2,-nHeight/2,nWidth,nHeight);
-
     int width = qApp->desktop()->screen()->width();
     int height = qApp->desktop()->screen()->height();
     logicRect.setX(0-(width-2)/2);

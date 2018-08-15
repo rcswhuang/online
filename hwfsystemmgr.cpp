@@ -94,7 +94,7 @@ void HWfSystemMgr::openOnlineGraph(const QString &graphName, const int graphID)
 {
     if(!m_pOnlineWindow)
         createOnlineWindow(m_pWfSystemWindow->getMdiArea());
-    m_pOnlineWindow->openOnlineGraph(graphName,graphID);
+    m_pOnlineWindow->openGraph(graphName,graphID);
 }
 
 bool HWfSystemMgr::Open(const QString& graphName,int id)

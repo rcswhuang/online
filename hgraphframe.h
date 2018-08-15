@@ -3,9 +3,6 @@
 
 #include "hframe.h"
 #include <QList>
-namespace Ui {
-class graphFrame;
-}
 /*
  * 画面浏览主窗口：两部分
  * 显示graph
@@ -24,8 +21,8 @@ class HGraphFrame : public HFrame
     Q_OBJECT
 
 public:
-    explicit HGraphFrame(QWidget *parent = 0);
-    HGraphFrame(HWfSystemMgr* mgr,QWidget *parent = 0);
+    explicit HGraphFrame(HFrame *parent = 0);
+    HGraphFrame(HWfSystemMgr* mgr,HFrame *parent = 0);
     ~HGraphFrame();
 public:
     //初始化窗口
@@ -61,12 +58,10 @@ public:
     QList<HIconObj*> m_pIconObjList;
 private:
     QRect logicRect;
-    Ui::graphFrame *ui;
     HGraphRefreshThread* m_pGraphRefreshThread;
     HGraphicsView* m_pGraphicsView;
     HGraphicsScene* m_pGraphicsScene;
     HWfSystemMgr* m_pWfSystemMgr;
-
 };
 
 #endif // HONLINEWINDOW_H

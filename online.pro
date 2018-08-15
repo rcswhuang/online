@@ -24,7 +24,6 @@ SOURCES += main.cpp\
     hwfsystemdoc.cpp \
     hwfsystemmgr.cpp \
     honlinetreewidget.cpp \
-    hoperorderview.cpp \
     hkerneltest.cpp \
     hupdatethread.cpp \
     hopsheet.cpp \
@@ -33,7 +32,8 @@ SOURCES += main.cpp\
     hframe.cpp \
     hgraphframe.cpp \
     hgraphfreshthread.cpp \
-    hrehearsalframe.cpp
+    hrehearsalframe.cpp \
+    heditorframe.cpp
 
 HEADERS  += \
     #htemplatewindow.h \
@@ -41,7 +41,6 @@ HEADERS  += \
     #htemplateview.h \
     hwfsystemwindow.h \
     hwfsystemdoc.h \
-    hoperorderview.h \
     honlinetreewidget.h \
     hwfsystemmgr.h \
     hkerneltest.h \
@@ -52,14 +51,14 @@ HEADERS  += \
     hframe.h \
     hgraphframe.h \
     hgraphfreshthread.h \
-    hrehearsalframe.h
+    hrehearsalframe.h \
+    heditorframe.h
 
 FORMS    += \
-    templatewindow.ui \
-    wfsystemwindow.ui \
-    operorderwindow.ui \
-    hkerneltest.ui \
-    graphframe.ui
+    UI/templatewindow.ui \
+    UI/wfsystemwindow.ui \
+    UI/operorderwindow.ui \
+    UI/hkerneltest.ui
 
 RESOURCES += \
     images.qrc \

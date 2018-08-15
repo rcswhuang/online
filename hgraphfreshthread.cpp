@@ -88,7 +88,7 @@ void HWork::on_time()
                     pObj->getIconSymbol()->setCurrentPattern(m_btValue);
                     //是不是需要刷新pObj这块区域
                     if(m_pGraphFrame && m_pGraphFrame->onlineScene())
-                        m_pGraphFrame->onlineScene()->invalidate(pObj->boundingRect(),QGraphicsScene::ItemLayer);
+                        m_pGraphFrame->graphicsScene()->invalidate(pObj->boundingRect(),QGraphicsScene::ItemLayer);
                 }
             }
         }
@@ -107,7 +107,7 @@ void HGraphRefreshThread::run()
 {
     //测试，检查独立进程是否启动工作
     qDebug()<<"HOnlineRefreshThread id" << QThread::currentThreadId();
-    HWork work(m_pOnlineWindow);
+    HWork work(m_pGraphFrame);
     work.p_Thread = this;
     QTimer timer;
     connect(&timer,SIGNAL(timeout()),&work,SLOT(on_time()));

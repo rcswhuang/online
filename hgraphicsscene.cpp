@@ -103,6 +103,7 @@ void HGraphicsScene::setGraph(HGraph *graph)
 */
 void HGraphicsScene::addGraphicsIconItem(HBaseObj* pObj,bool bdel)
 {
+    /*
     DRAWSHAPE drawShape = pObj->getShapeType();
     int nZValue = pObj->getStackOrder();
     //所有items不能具有seleced或者move的功能
@@ -249,7 +250,7 @@ void HGraphicsScene::addGraphicsIconItem(HBaseObj* pObj,bool bdel)
         {
             complex = 0;
         }
-    }
+    }*/
 }
 
 void HGraphicsScene::openGraphicsSceneItems()
@@ -263,7 +264,7 @@ void HGraphicsScene::openGraphicsSceneItems()
         HBaseObj* pObj = (HBaseObj*)pObjList[i];
         if(!pObj)
             continue;
-        addOnlineIconItem(pObj,true);
+        addGraphicsIconItem(pObj,true);
     }
 }
 
