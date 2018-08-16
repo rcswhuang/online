@@ -1,11 +1,12 @@
 #ifndef HFRAME_H
 #define HFRAME_H
 #include <QFrame>
-class QVBoxLayout;
+#include <QVBoxLayout>
+
 class HFrame : public QFrame
 {
 public:
-    HFrame(QFrame* parent = 0);
+    HFrame(QWidget* parent = 0);
 
 protected:
     QVBoxLayout *frameLayout;

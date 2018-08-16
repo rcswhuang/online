@@ -30,4 +30,5 @@ void HGraphicsView::refresh()
     int height = viewport()->height() + vBar;
     resize(width-1,height-1);
     resize(width,height);
+
 }

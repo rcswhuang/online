@@ -1,14 +1,12 @@
 #include "hrehearsalframe.h"
 #include "ui_operorderwindow.h"
 
-HRehearsalFrame::HRehearsalFrame(QWidget *parent) :
-    HFrame(parent),
-    ui(new Ui::operorderWindow)
+HRehearsalFrame::HRehearsalFrame(HFrame *parent) :
+    HFrame(parent)
 {
-    ui->setupUi(this);
+
 }
 
 HRehearsalFrame::~HRehearsalFrame()
 {
-    delete ui;
 }

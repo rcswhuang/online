@@ -11,6 +11,7 @@
 #include <QTimer>
 #include <QScrollBar>
 #include <QDesktopWidget>
+#include <QApplication>
 HGraphFrame::HGraphFrame(HFrame *parent) :
     HFrame(parent)
 {

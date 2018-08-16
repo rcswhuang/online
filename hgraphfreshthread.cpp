@@ -87,7 +87,7 @@ void HWork::on_time()
                 {
                     pObj->getIconSymbol()->setCurrentPattern(m_btValue);
                     //是不是需要刷新pObj这块区域
-                    if(m_pGraphFrame && m_pGraphFrame->onlineScene())
+                    if(m_pGraphFrame && m_pGraphFrame->graphicsScene())
                         m_pGraphFrame->graphicsScene()->invalidate(pObj->boundingRect(),QGraphicsScene::ItemLayer);
                 }
             }
