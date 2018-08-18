@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QRectF>
 #include "hiconapi.h"
+#include "hopsheet.h"
+
 class QMdiArea;
 
 
@@ -60,12 +62,16 @@ public:
     //创建在线浏览窗口
     void createOnlineWindow(QMdiArea* area);
 
-public:
     void openOnlineGraph(const QString &graphName, const int graphID);
 
+public:
+    HOpSheetInfo* findOpSheetInfo(int id);
+    HOpSheetInfo* findOpSheetInfo(QString name);
+    bool loadOpSheetInfo();
+    bool saveOpSheetInfo();
 
 protected:
-
+    QList<HOpSheetInfo*> m_pOpSheetInfoList;
 private:
     QString strGraphFile;
     HWfSystemDoc* m_wfSystemDoc;

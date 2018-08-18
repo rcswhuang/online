@@ -11,10 +11,10 @@ public:
     HOpSheetInfo();
     ~HOpSheetInfo();
 public:
-    void loadFromDb(int row);
-    void saveToDb(int row);
-    HOpSheetInfo* setOpSheetInfo(HOpSheetInfo* info);
-    HOpSheetInfo* getOpSheetInfo(HOpSheetInfo* info);
+    //void loadFromDb(int row);
+    //void saveToDb(int row);
+    void setOpSheetInfo(OPSHEETINFO* info);
+    void getOpSheetInfo(OPSHEETINFO* info);
     bool getAttr(ushort wAttr,void* pVal,size_t size = 0);
     bool setAttr(ushort wAttr,void* pVal,size_t size = 0);
     void copyTo(HOpSheetInfo* info);
@@ -23,9 +23,10 @@ public:
     bool checkExist();
 
 protected:
-    OPSHEETINFO opSheetInfo;
+    OPSHEETINFO m_opSheetInfo;
 };
 
+/*
 class HOpSheetInfoList : public QList<HOpSheetInfo>
 {
 public:
@@ -38,7 +39,7 @@ public:
     bool loadOpSheetInfo(int nNum);
     bool saveOpSheetInfo();
 };
-
+*/
 
 //操作票项类
 class HOpSheetStep : public QObject

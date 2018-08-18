@@ -3,6 +3,7 @@
 #include <QDesktopWidget>
 #include <QScrollBar>
 #include <QMdiArea>
+#include "honlineapi.h"
 #include "hkernelapi.h"
 #include "hwfsystemdoc.h"
 #include "hgraphicsscene.h"
@@ -102,4 +103,48 @@ bool HWfSystemMgr::Open(const QString& graphName,int id)
     if(!m_wfSystemDoc)
         return false;
     return m_wfSystemDoc->openGraph(graphName,id);
+}
+
+HOpSheetInfo* HWfSystemMgr::findOpSheetInfo(ushort wOpSheetID)
+{
+    HOpSheetInfo* pOpSheetInfo = NULL;
+    QList<HOpSheetInfo*>::iterator it = m_pOpSheetInfoList.begin();
+    for(;it != m_pOpSheetInfoList.end();++it)
+    {
+        pOpSheetInfo = *it;
+        ushort wID;
+        pOpSheetInfo->getAttr(OPSHEET_ATTR_ID,&wID);
+        if(wID == wOpSheetID)
+            return pOpSheetInfo;
+    }
+    return NULL;
+}
+
+HOpSheetInfo* HWfSystemMgr::findOpSheetInfo(QString name)
+{
+    return NULL;
+}
+
+bool HWfSystemMgr::loadOpSheetInfo()
+{
+    DATAFILEHEADER dataFileHandle;
+    openDB(FILE_TYPE_OPSHEETINFO);
+    loadDataFileHeader(FILE_TYPE_OPSHEETINFO,&dataFileHandle);
+    HOpSheetInfo* pOpSheetInfo;
+    for(int i = 0; i < dataFileHandle.wTotal;i++)
+    {
+        pOpSheetInfo = new HOpSheetInfo;
+        if(false == loadDBRecord(FILE_TYPE_POINTTERM,++i,&pOpSheetInfo->m_opSheetInfo))
+        {
+            delete pOpSheetInfo;
+            break;
+        }
+
+    }
+    closeDB(FILE_TYPE_OPSHEETINFO);
+}
+
+bool HWfSystemMgr::saveOpSheetInfo()
+{
+
 }

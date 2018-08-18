@@ -52,7 +52,8 @@ HEADERS  += \
     hgraphframe.h \
     hgraphfreshthread.h \
     hrehearsalframe.h \
-    heditorframe.h
+    heditorframe.h \
+    honlineapi.h
 
 FORMS    += \
     UI/templatewindow.ui \
