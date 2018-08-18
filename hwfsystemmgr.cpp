@@ -134,17 +134,42 @@ bool HWfSystemMgr::loadOpSheetInfo()
     for(int i = 0; i < dataFileHandle.wTotal;i++)
     {
         pOpSheetInfo = new HOpSheetInfo;
-        if(false == loadDBRecord(FILE_TYPE_POINTTERM,++i,&pOpSheetInfo->m_opSheetInfo))
+        if(false == loadDBRecord(FILE_TYPE_OPSHEETINFO,++i,&pOpSheetInfo->m_opSheetInfo))
         {
             delete pOpSheetInfo;
-            break;
+            continue;
         }
+        ushort wID;
+        pOpSheetInfo->getAttr(OPSHEET_ATTR_ID,&wID);
+        if(!pOpSheetInfo->checkExist() || findOpSheetInfo(wID))
+        {
+            delete pOpSheetInfo;
+            pOpSheetInfo = NULL;
+            continue;
+        }
+        m_pOpSheetInfoList.append(pOpSheetInfo);
 
     }
     closeDB(FILE_TYPE_OPSHEETINFO);
+    return true;
 }
 
 bool HWfSystemMgr::saveOpSheetInfo()
 {
-
+    createDB(FILE_TYPE_OPSHEETINFO);
+    DATAFILEHEADER dataFileHandle;
+    loadDataFileHeader(FILE_TYPE_OPSHEETINFO,&dataFileHandle);
+    dataFileHandle.wTotal = m_pOpSheetInfoList.count();
+    saveDataFileHeader(FILE_TYPE_OPSHEETINFO,&dataFileHandle);
+    HOpSheetInfo* pOpSheetInfo;
+    for(int i = 0; i < m_pOpSheetInfoList.count();i++)
+    {
+        pOpSheetInfo = m_pOpSheetInfoList[i];
+        if(false == saveDBRecord(FILE_TYPE_OPSHEETINFO,++i,&pOpSheetInfo->m_opSheetInfo))
+        {
+            return false;
+        }
+    }
+    closeDB(FILE_TYPE_OPSHEETINFO);
+    return true;
 }

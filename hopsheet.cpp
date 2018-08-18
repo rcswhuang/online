@@ -217,12 +217,18 @@ bool HOpSheetStep::isLockType()
 ///////////////////////////////////////////////////////////////////////
 HOpSheet::HOpSheet()
 {
-
+    m_pOpSheetInfo = NULL;
+    bModify = false;
 }
 
 HOpSheet::~HOpSheet()
 {
-
+    clearOpSheetSteps();
+    if(m_pOpSheetInfo)
+    {
+        delete m_pOpSheetInfo;
+        m_pOpSheetInfo = NULL;
+    }
 }
 
 bool HOpSheet::getAttr(ushort wAttr,void* pVal,size_t size)

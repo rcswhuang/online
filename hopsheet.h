@@ -11,8 +11,6 @@ public:
     HOpSheetInfo();
     ~HOpSheetInfo();
 public:
-    //void loadFromDb(int row);
-    //void saveToDb(int row);
     void setOpSheetInfo(OPSHEETINFO* info);
     void getOpSheetInfo(OPSHEETINFO* info);
     bool getAttr(ushort wAttr,void* pVal,size_t size = 0);
@@ -20,7 +18,7 @@ public:
     void copyTo(HOpSheetInfo* info);
     void copyFrom(HOpSheetInfo* info);
 
-    bool checkExist();
+    bool checkExist();//判断文件是否存在
 
 protected:
     OPSHEETINFO m_opSheetInfo;
