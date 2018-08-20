@@ -121,7 +121,46 @@ bool HOpSheetInfo::checkExist()
 ///////////////////////////////////////////////////////////////////////////////////////////
 HOpSheetStep::HOpSheetStep()
 {
+    m_bBreak = false;
+    m_bRunning = false;
+    memset(&opSheetStep,0,sizeof(OPSHEETSTEP));
+    opSheetStep.wOpSheetID = (ushort)-1;
+    opSheetStep.nStepIndex = (int)-1;
+    opSheetStep.nPreStepIndex = (int)-1;
+    opSheetStep.nNextStepIndex = (int)-1;
 
+    opSheetStep.wOpStID = (ushort)-1;
+    opSheetStep.wOpPtID = (ushort)-1;
+    opSheetStep.btOpType = STEP_TYPE_TISHI;
+    opSheetStep.btLockType = (ushort)-1;//锁类型
+    opSheetStep.dwMainLockNo = (ulong)-1;
+    opSheetStep.dwOpenLockNo = (ulong)-1;
+    opSheetStep.dwCloseLockNo = (ulong)-1;
+    qstrcpy(opSheetStep.szContent,QStringLiteral("新步骤"));
+    qstrcpy(opSheetStep.szRemark,QStringLiteral("操作备注"));
+    opSheetStep.wOpFlag = (ushort)-1;
+}
+
+HOpSheetStep::HOpSheetStep(ushort wOpSheetID)
+{
+    m_bBreak = false;
+    m_bRunning = false;
+    memset(&opSheetStep,0,sizeof(OPSHEETSTEP));
+    opSheetStep.wOpSheetID = wOpSheetID;
+    opSheetStep.nStepIndex = (int)-1;
+    opSheetStep.nPreStepIndex = (int)-1;
+    opSheetStep.nNextStepIndex = (int)-1;
+
+    opSheetStep.wOpStID = (ushort)-1;
+    opSheetStep.wOpPtID = (ushort)-1;
+    opSheetStep.btOpType = STEP_TYPE_TISHI;
+    opSheetStep.btLockType = (ushort)-1;//锁类型
+    opSheetStep.dwMainLockNo = (ulong)-1;
+    opSheetStep.dwOpenLockNo = (ulong)-1;
+    opSheetStep.dwCloseLockNo = (ulong)-1;
+    qstrcpy(opSheetStep.szContent,QStringLiteral("新步骤"));
+    qstrcpy(opSheetStep.szRemark,QStringLiteral("操作备注"));
+    opSheetStep.wOpFlag = (ushort)-1;
 }
 
 HOpSheetStep::~HOpSheetStep()
@@ -141,12 +180,55 @@ void HOpSheetStep::saveToDb(int row)
 
 bool HOpSheetStep::getAttr(ushort wAttr,void* pVal,size_t size)
 {
-    return false;
+    if(!pVal)
+        return false;
+    switch(wAttr)
+    {
+    case STEP_ATTR_OPTABID  : *((ushort*)pVal) = opSheetStep.wOpSheetID;break;
+    case STEP_ATTR_INDEX    : *((ushort*)pVal) = opSheetStep.nStepIndex;break;
+    case STEP_ATTR_OPSTID   : *((ushort*)pVal) = opSheetStep.wOpStID;break;
+    case STEP_ATTR_OPPTID   : *((ushort*)pVal) = opSheetStep.wOpPtID;break;
+    case STEP_ATTR_OPTYPE   : *((ushort*)pVal) = opSheetStep.btOpType;break;
+    case STEP_ATTR_LOCKTYPE : *((ushort*)pVal) = opSheetStep.btLockType;break;
+    case STEP_ATTR_MLOCKNO  : *((int*)pVal) = opSheetStep.dwMainLockNo;break;
+    case STEP_ATTR_SENTENCE : qstrcpy((char*)pVal,opSheetStep.szContent);break;
+    case STEP_ATTR_OPTIME   : *((time_t*)pVal) = opSheetStep.tOpTime;break;
+    case STEP_ATTR_HELOCKNO : *((ushort*)pVal) = opSheetStep.dwOpenLockNo;break;
+    case STEP_ATTR_FENLOCKNO: *((ushort*)pVal) = opSheetStep.dwCloseLockNo;break;
+    case STEP_ATTR_PRESTEP  : *((ushort*)pVal) = opSheetStep.nPreStepIndex;break;
+    case STEP_ATTR_NEXTSTEP : *((ushort*)pVal) = opSheetStep.nNextStepIndex;break;
+    case STEP_ATTR_OPFLAG   : *((time_t*)pVal) = opSheetStep.wOpFlag;break;
+    default: return false;
+    }
+    return true;
 }
 
 bool HOpSheetStep::setAttr(ushort wAttr,void* pVal,size_t size)
 {
-    return false;
+    if(!pVal)
+        return false;
+    switch(wAttr)
+    {
+    case STEP_ATTR_OPTABID  : opSheetStep.wOpSheetID = *((ushort*)pVal);break;
+    case STEP_ATTR_INDEX    : opSheetStep.nStepIndex = *((ushort*)pVal);break;
+    case STEP_ATTR_OPSTID   : opSheetStep.wOpStID = *((ushort*)pVal);break;
+    case STEP_ATTR_OPPTID   : opSheetStep.wOpPtID = *((ushort*)pVal);break;
+    case STEP_ATTR_OPTYPE   : opSheetStep.btOpType = *((ushort*)pVal);break;
+    case STEP_ATTR_LOCKTYPE : opSheetStep.btLockType = *((ushort*)pVal);break;
+    case STEP_ATTR_MLOCKNO  : opSheetStep.dwMainLockNo = *((int*)pVal);break;
+    case STEP_ATTR_SENTENCE :
+        qstrncpy(opSheetStep.szContent,(char*)pVal,OPERASHEETCONTENTLEN-1);
+        opSheetStep.szContent[OPERASHEETCONTENTLEN-1] = 0;
+        break;
+    case STEP_ATTR_OPTIME   : opSheetStep.tOpTime = *((time_t*)pVal);break;
+    case STEP_ATTR_HELOCKNO : opSheetStep.dwOpenLockNo = *((ushort*)pVal);break;
+    case STEP_ATTR_FENLOCKNO: opSheetStep.dwCloseLockNo = *((ushort*)pVal);break;
+    case STEP_ATTR_PRESTEP  : opSheetStep.nPreStepIndex = *((ushort*)pVal);break;
+    case STEP_ATTR_NEXTSTEP : opSheetStep.nNextStepIndex = *((ushort*)pVal); break;
+    case STEP_ATTR_OPFLAG   : opSheetStep.wOpFlag = *((time_t*)pVal) = ;break;
+    default: return false;
+    }
+    return true;
 }
 
 void HOpSheetStep::setStepIndex(int step)
@@ -159,44 +241,46 @@ int HOpSheetStep::getStepIndex()
     return 0;
 }
 
-HOpSheetStep* HOpSheetStep::setOpSheetStep(HOpSheetStep* item)
+void HOpSheetStep::setOpSheetStep(HOpSheetStep* step)
 {
-    return NULL;
+    if(!step) return;
+    memcpy(&opSheetStep,step,sizeof(OPSHEETSTEP));
 }
 
-HOpSheetStep* HOpSheetStep::getOpSheetStep(HOpSheetStep* item)
+void HOpSheetStep::getOpSheetStep(HOpSheetStep* step)
 {
-    return NULL;
+    if(!step) return;
+    memcpy(step,&opSheetStep,sizeof(OPSHEETSTEP));
 }
 
-void HOpSheetStep::start(int row)
+void HOpSheetStep::start()
 {
-
+    m_bRunning = true;
 }
 
 void HOpSheetStep::stop()
 {
-
+    m_bRunning = false;
 }
 
-void HOpSheetStep::isRunning()
+bool HOpSheetStep::isRunning()
 {
-
+    return m_bRunning;
 }
 
-void HOpSheetStep::setInterrupt(int row)
+void HOpSheetStep::setBreak()
 {
-
+    m_bBreak = !m_bBreak;
 }
 
-bool HOpSheetStep::isInterrupt(int row)
+bool HOpSheetStep::isBreak()
 {
-    return false;
+    return m_bBreak;
 }
 
-void HOpSheetStep::clearInterrupt()
+void HOpSheetStep::clearBreak()
 {
-
+    m_bBreak = false;
 }
 
 bool HOpSheetStep::isRemoteOp()
@@ -209,7 +293,7 @@ bool HOpSheetStep::isLocalOp()
     return false;
 }
 
-bool HOpSheetStep::isLockType()
+bool HOpSheetStep::isCtrlLock()
 {
     return false;
 }

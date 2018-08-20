@@ -44,6 +44,7 @@ class HOpSheetStep : public QObject
 {
 public:
     HOpSheetStep();
+    HOpSheetStep(ushort wOpSheetID);//操作票ID
     ~HOpSheetStep();
 
 public:
@@ -53,23 +54,23 @@ public:
     bool setAttr(ushort wAttr,void* pVal,size_t size = 0);
     void setStepIndex(int step);
     int getStepIndex();
-    HOpSheetStep* setOpSheetStep(HOpSheetStep* item);
-    HOpSheetStep* getOpSheetStep(HOpSheetStep* item);
+    void setOpSheetStep(HOpSheetStep* item);
+    void getOpSheetStep(HOpSheetStep* item);
 
-    void start(int row);
+    void start();
     void stop();
-    void isRunning();
-    void setInterrupt(int row);
-    bool isInterrupt(int row);
-    void clearInterrupt();
+    bool isRunning();
+    void setBreak();
+    bool isBreak();
+    void clearBreak();
 
     bool isRemoteOp();
     bool isLocalOp();
-    bool isLockType();
+    bool isCtrlLock();
 
 protected:
-    OPSHEETSTEP opSheetItem;
-    bool m_bInterrupt;
+    OPSHEETSTEP opSheetStep;
+    bool m_bBreak;
     bool m_bRunning;
 
 };
