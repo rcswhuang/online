@@ -1,5 +1,6 @@
 #include "hopsheet.h"
 #include "honlineapi.h"
+#include "dbtoolapi.h"
 ///////////////////////////////////////////////////////////////////////////////
 //
 HOpSheetInfo::HOpSheetInfo()
@@ -233,12 +234,12 @@ bool HOpSheetStep::setAttr(ushort wAttr,void* pVal,size_t size)
 
 void HOpSheetStep::setStepIndex(int step)
 {
-
+    opSheetStep.nStepIndex = step;
 }
 
 int HOpSheetStep::getStepIndex()
 {
-    return 0;
+    return opSheetStep.nStepIndex;
 }
 
 void HOpSheetStep::setOpSheetStep(HOpSheetStep* step)
@@ -285,11 +286,15 @@ void HOpSheetStep::clearBreak()
 
 bool HOpSheetStep::isRemoteOp()
 {
+    if(DIGITAL_OPERAFLAG_REMOTE == opSheetStep.wOpFlag)
+        return true;
     return false;
 }
 
 bool HOpSheetStep::isLocalOp()
 {
+    if(DIGITAL_OPERAFLAG_LOCAL == opSheetStep.wOpFlag)
+        return true;
     return false;
 }
 
@@ -317,25 +322,43 @@ HOpSheet::~HOpSheet()
 
 bool HOpSheet::getAttr(ushort wAttr,void* pVal,size_t size)
 {
-    return false;
+    if(!pVal || !m_pOpSheetInfo)
+        return false;
+    return m_pOpSheetInfo->getAttr(wAttr,pVal,size);
+    //return true;
 }
 
 bool HOpSheet::setAttr(ushort wAttr,void* pVal,size_t size)
 {
-    return false;
+    if(!pVal || !m_pOpSheetInfo)
+        return false;
+    return m_pOpSheetInfo->setAttr(wAttr,pVal,size);
+    //return true;
 }
 
 void HOpSheet::clearOpSheetSteps()
 {
-
+    while(!m_pOpSheetStepList.isEmpty())
+        delete (OPSHEETSTEP*)m_pOpSheetStepList.takeFirst();
 }
 
+//操作票增加步骤
 HOpSheetStep* HOpSheet::addOpSheetStep()
 {
+    if(!m_pOpSheetInfo) return NULL;
+    ushort wOpSheetID;
+    if(!getAttr(OPSHEET_ATTR_ID,&wOpSheetID) || (ushort)-1 == wOpSheetID)
+        return NULL;
+    HOpSheetStep* pOpSheetStep = new HOpSheetStep(wOpSheetID);
+    if(!pOpSheetStep) return NULL;
+    m_pOpSheetStepList.append(pOpSheetStep);
+    int nSteps = m_pOpSheetStepList.count();
+    pOpSheetStep->setStepIndex(nSteps);
+    setAttr(OPSHEET_ATTR_STEPS,nSteps);
     return NULL;
 }
 
-HOpSheetStep* HOpSheet::insertOpSheetItem(int row)
+HOpSheetStep* HOpSheet::insertOpSheetItem(int step)
 {
     return NULL;
 }

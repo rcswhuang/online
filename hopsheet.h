@@ -115,7 +115,7 @@ public slots:
 
 protected:
     HOpSheetInfo* m_pOpSheetInfo;
-    QList<HOpSheetStep*> m_pOpSheetItemList;
+    QList<HOpSheetStep*> m_pOpSheetStepList;
     bool bModify;
 };
 
