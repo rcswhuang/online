@@ -1,6 +1,7 @@
 #include "hopsheet.h"
 #include "honlineapi.h"
 #include "dbtoolapi.h"
+#include <QtAlgorithms>
 ///////////////////////////////////////////////////////////////////////////////
 //
 HOpSheetInfo::HOpSheetInfo()
@@ -338,8 +339,11 @@ bool HOpSheet::setAttr(ushort wAttr,void* pVal,size_t size)
 
 void HOpSheet::clearOpSheetSteps()
 {
+    /*
     while(!m_pOpSheetStepList.isEmpty())
-        delete (OPSHEETSTEP*)m_pOpSheetStepList.takeFirst();
+        delete (OPSHEETSTEP*)m_pOpSheetStepList.takeFirst();*/
+    qDeleteAll(m_pOpSheetStepList.begin(),m_pOpSheetStepList.end());
+    m_pOpSheetStepList.clear();
 }
 
 //操作票增加步骤
