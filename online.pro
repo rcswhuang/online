@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     hgraphframe.cpp \
     hgraphfreshthread.cpp \
     hrehearsalframe.cpp \
-    heditorframe.cpp
+    heditorframe.cpp \
+    hopterm.cpp
 
 HEADERS  += \
     #htemplatewindow.h \
@@ -53,7 +54,8 @@ HEADERS  += \
     hgraphfreshthread.h \
     hrehearsalframe.h \
     heditorframe.h \
-    honlineapi.h
+    honlineapi.h \
+    hopterm.h
 
 FORMS    += \
     UI/templatewindow.ui \

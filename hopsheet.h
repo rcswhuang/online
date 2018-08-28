@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "publicdata.h"
+class HWfSystemMgr;
 //操作票信息类
 class HOpSheetInfo: public QObject
 {
@@ -96,10 +97,10 @@ public:
 
     void start(int row);
     void stop();
-    void isRunning();
-    void setInterrupt(int row);
-    bool isInterrupt(int row);
-    void clearInterrupt();
+    bool isRunning(int index);
+    void setBreak(int index);
+    bool isBreak(int index);
+    void clearBreak();
     bool isModify();
     void setModify(bool modify = true);
 
@@ -113,10 +114,12 @@ signals:
 
 public slots:
 
+public:
+    HWfSystemMgr* m_pWfSystemMgr;
 protected:
     HOpSheetInfo* m_pOpSheetInfo;
     QList<HOpSheetStep*> m_pOpSheetStepList;
-    bool bModify;
+    bool m_bModify;
 };
 
 #endif // HOPSHEET_H

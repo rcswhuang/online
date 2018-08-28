@@ -1,5 +1,6 @@
 #ifndef HONLINEAPI_H
 #define HONLINEAPI_H
+#include <QDebug>
 //操作票类型
 //临时票 典型票 预演票 作废票 完成票 归档票 量测票
 #define OPSHEET_TYPE_TEMP     1

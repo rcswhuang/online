@@ -17,7 +17,7 @@ class HWfSystemDoc;
 class HWfSystemWindow;
 class HGraphFrame;
 class HOperOrderWindow;
-
+class HPointTerm;
 //class HTemplateWindow;
 
 /*
@@ -43,6 +43,12 @@ public:
     //退出dll库
     void exitInstance();
 
+    bool loadDB();
+    bool loadData();
+    bool loadPointTerm();//测点
+    bool loadOpTerm();//操作术语
+    bool loadPlugin();//主要是动态加载
+
     //启动时加载模板列表
     void loadIconTemplates();
 
@@ -65,13 +71,26 @@ public:
     void openOnlineGraph(const QString &graphName, const int graphID);
 
 public:
+    //测点类型相关
+    HPointTerm* findPointTerm(ushort id);
+    HPointTerm* findPointTerm(QString name);
+    //操作票相关
     HOpSheetInfo* findOpSheetInfo(int id);
     HOpSheetInfo* findOpSheetInfo(QString name);
     bool loadOpSheetInfo();
     bool saveOpSheetInfo();
+    HOpSheetInfo* addOpSheet();
+    bool delOpSheet(ushort wOpSheetID);
+    ushort getPreOpSheet(ushort wOpSheetID);
+    ushort getNextOpSheet(ushort wOpSheetID);
+
+
 
 protected:
     QList<HOpSheetInfo*> m_pOpSheetInfoList;
+    QList<OPTERMGROUP*> m_pOpTermGroupList;
+    QList<HPointTerm*> m_pPointTermList;
+
 private:
     QString strGraphFile;
     HWfSystemDoc* m_wfSystemDoc;

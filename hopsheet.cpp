@@ -1,7 +1,9 @@
 #include "hopsheet.h"
 #include "honlineapi.h"
 #include "dbtoolapi.h"
+#include "hwfsystemmgr.h"
 #include <QtAlgorithms>
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 HOpSheetInfo::HOpSheetInfo()
@@ -308,7 +310,7 @@ bool HOpSheetStep::isCtrlLock()
 HOpSheet::HOpSheet()
 {
     m_pOpSheetInfo = NULL;
-    bModify = false;
+    m_bModify = false;
 }
 
 HOpSheet::~HOpSheet()
@@ -364,86 +366,287 @@ HOpSheetStep* HOpSheet::addOpSheetStep()
 
 HOpSheetStep* HOpSheet::insertOpSheetItem(int step)
 {
+    if(!m_pOpSheetInfo) return NULL;
+
+    if(m_pOpSheetStepList.isEmpty())
+        return addOpSheetStep();
+    else
+    {
+        //1.找到第step步，获取index和pre和next
+        HOpSheetStep* pCurSheetStep = m_pOpSheetStepList.value(step);
+        if(!pCurSheetStep) return NULL;
+        int nCurStepIndex,nPreStepIndex,nNextStepIndex;
+        nCurStepIndex = nPreStepIndex = nNextStepIndex = (int)-1;
+        pCurSheetStep->getAttr(STEP_ATTR_INDEX,&nCurStepIndex);
+        pCurSheetStep->getAttr(STEP_ATTR_PRESTEP,&nPreStepIndex);
+        pCurSheetStep->getAttr(STEP_ATTR_NEXTSTEP,&nNextStepIndex);
+
+        //2.新建新的步骤
+        ushort wOpSheetID;
+        if(!getAttr(OPSHEET_ATTR_ID,&wOpSheetID) || (ushort)-1 == wOpSheetID)
+            return NULL;
+        ushort wOpSheetID1;
+        pCurSheetStep->getAttr(OPSHEET_ATTR_ID,&wOpSheetID1);
+        if(wOpSheetID != wOpSheetID1)
+            return NULL;
+        HOpSheetStep* pNewSheetStep = new HOpSheetStep(wOpSheetID);
+        pNewSheetStep->setAttr(STEP_ATTR_INDEX,&nCurStepIndex);
+        pNewSheetStep->setAttr(STEP_ATTR_PRESTEP,&nPreStepIndex);
+        pNewSheetStep->setAttr(STEP_ATTR_NEXTSTEP,&nNextStepIndex);
+        m_pOpSheetStepList.insert(step,pNewSheetStep);
+
+        for(int i = step+1;i < m_pOpSheetStepList.count();i++)
+        {
+            nCurStepIndex = nPreStepIndex = nNextStepIndex = (int)-1;
+            HOpSheetStep* pOpSheetStep = m_pOpSheetStepList[i];
+            if(!pOpSheetStep) continue;
+            pOpSheetStep->getAttr(STEP_ATTR_INDEX,&nCurStepIndex);
+            pOpSheetStep->getAttr(STEP_ATTR_PRESTEP,&nPreStepIndex);
+            pOpSheetStep->getAttr(STEP_ATTR_NEXTSTEP,&nNextStepIndex);
+            if(nCurStepIndex != (int)-1) nCurStepIndex++;
+            if(nPreStepIndex != (int)-1) nPreStepIndex++;
+            if(nNextStepIndex != (int)-1) nNextStepIndex++;
+            pOpSheetStep->setAttr(STEP_ATTR_INDEX,&nCurStepIndex);
+            pOpSheetStep->setAttr(STEP_ATTR_PRESTEP,&nPreStepIndex);
+            pOpSheetStep->setAttr(STEP_ATTR_NEXTSTEP,&nNextStepIndex);
+        }
+        int nSteps;
+        getAttr(OPSHEET_ATTR_STEPS,&nSteps);
+        nSteps++;
+        setAttr(OPSHEET_ATTR_STEPS,&nSteps);
+        qDebug()<<(m_pOpSheetStepList.count() - nSteps);
+
+        return pNewSheetStep;
+    }
     return NULL;
 }
 
-HOpSheetStep* HOpSheet::getOpSheetStep(int row)
+HOpSheetStep* HOpSheet::getOpSheetStep(int index)
 {
-    return NULL;
+    return (HOpSheetStep*)m_pOpSheetStepList.value(index);
 }
 
-bool HOpSheet::moveOpSheetStep(int row,bool bup)
+bool HOpSheet::moveOpSheetStep(int index,bool up)//上移还是下移
 {
     return false;
 }
 
-bool HOpSheet::delOpSheetStep(int row)
+bool HOpSheet::delOpSheetStep(int index)
 {
-    return false;
+    HOpSheetStep* pOpSheetStep = m_pOpSheetStepList.value(index);
+    if(!pOpSheetStep) return true;
+
+    int nCurStepIndex,nPreStepIndex,nNextStepIndex;
+    for(int i = step+1;i < m_pOpSheetStepList.count();i++)
+    {
+        nCurStepIndex = nPreStepIndex = nNextStepIndex = (int)-1;
+        HOpSheetStep* pOpSheetStep = m_pOpSheetStepList[i];
+        if(!pOpSheetStep) continue;
+        pOpSheetStep->getAttr(STEP_ATTR_INDEX,&nCurStepIndex);
+        pOpSheetStep->getAttr(STEP_ATTR_PRESTEP,&nPreStepIndex);
+        pOpSheetStep->getAttr(STEP_ATTR_NEXTSTEP,&nNextStepIndex);
+        if(nCurStepIndex != (int)-1) nCurStepIndex--;
+        if(nPreStepIndex != (int)-1) nPreStepIndex--;
+        if(nNextStepIndex != (int)-1) nNextStepIndex--;
+        pOpSheetStep->setAttr(STEP_ATTR_INDEX,&nCurStepIndex);
+        pOpSheetStep->setAttr(STEP_ATTR_PRESTEP,&nPreStepIndex);
+        pOpSheetStep->setAttr(STEP_ATTR_NEXTSTEP,&nNextStepIndex);
+    }
+    int nSteps;
+    getAttr(OPSHEET_ATTR_STEPS,&nSteps);
+    nSteps--;
+    setAttr(OPSHEET_ATTR_STEPS,&nSteps);
+
+    m_pOpSheetStepList.removeOne(pOpSheetStep);
+    delete pOpSheetStep;
+    pOpSheetStep = NULL;
+
+    qDebug()<<(m_pOpSheetStepList.count() - nSteps);
+
 }
 
-void HOpSheet::start(int row)
+void HOpSheet::start(int index)
 {
-
+    HOpSheetStep* pOpSheetStep = m_pOpSheetStepList.value(index);
+    if(!pOpSheetStep) return;
+    pOpSheetStep->start();
 }
 
 void HOpSheet::stop()
 {
-
+    QList<HOpSheetStep*>::iterator it = m_pOpSheetStepList.begin();
+    while(it != m_pOpSheetStepList.end())
+    {
+        HOpSheetStep* pOpSheetStep = *it;
+        if(!pOpSheetStep) continue;
+        pOpSheetStep->stop();
+        it++;
+    }
 }
 
-void HOpSheet::isRunning()
+bool HOpSheet::isRunning(int index)
 {
-
+    HOpSheetStep* pOpSheetStep = m_pOpSheetStepList.value(index);
+    if(!pOpSheetStep) return false;
+    return pOpSheetStep->isRunning();
 }
 
-void HOpSheet::setInterrupt(int row)
+void HOpSheet::setBreak(int index)
 {
-
+    HOpSheetStep* pOpSheetStep = m_pOpSheetStepList.value(index);
+    if(!pOpSheetStep) return;
+    pOpSheetStep->setBreak();
 }
 
-bool HOpSheet::isInterrupt(int row)
+bool HOpSheet::isBreak(int index)
 {
-    return false;
+    HOpSheetStep* pOpSheetStep = m_pOpSheetStepList.value(index);
+    if(!pOpSheetStep) return false;
+    return pOpSheetStep->isBreak();
 }
 
-void HOpSheet::clearInterrupt()
+void HOpSheet::clearBreak()
 {
-
+    QList<HOpSheetStep*>::iterator it = m_pOpSheetStepList.begin();
+    while(it != m_pOpSheetStepList.end())
+    {
+        HOpSheetStep* pOpSheetStep = *it;
+        if(!pOpSheetStep) continue;
+        pOpSheetStep->clearBreak();
+        it++;
+    }
 }
 
 bool HOpSheet::isModify()
 {
-    return false;
+    return m_bModify;
 }
 
 void HOpSheet::setModify(bool modify)
 {
-
+    m_bModify = modify;
 }
 
 //数据库部分
 bool HOpSheet::loadOpSheet(ushort wOpSheetID)
 {
-    return false;
+    if((ushort)-1 == wOpSheetID)
+        return false;
+    HOpSheetInfo* pOpSheetInfo = m_pWfSystemMgr->findOpSheetInfo(wOpSheetID);
+    if(!pOpSheetInfo) return false;
+    if(NULL == m_pOpSheetInfo)
+    {
+        m_pOpSheetInfo = new HOpSheetInfo;
+        if(!m_pOpSheetInfo) return false;
+    }
+    m_pOpSheetInfo->copyFrom(pOpSheetInfo);
+    //开始读取step
+    int nSteps;
+    if(!getAttr(OPSHEET_ATTR_STEPS,&nSteps))
+        return false;
+    clearOpSheetSteps();
+    if(nSteps > 0)
+    {
+        char szFile[256],szPath[256];
+        getDataFilePath(DFPATH_OPSHEET,szPath);
+        sprintf(szFile,"%s%s%5u%s",szPath,"OPS",wOpSheetID,".OPS");
+        int fd = createDBFile(szFile);
+        if((int)-1 == fd)
+            return false;
+        DATAFILEHEADER dataFileHeader;
+        loadDataFileHeader(fd,&dataFileHeader);
+        for(int i = 0; i < dataFileHeader.wTotal;i++)
+        {
+            HOpSheetStep* pOpSheetStep = new HOpSheetStep;
+            if(false == loadDBRecord(fd,++i,&pOpSheetStep->opSheetStep))
+            {
+                delete pOpSheetStep;
+                continue;
+            }
+            m_pOpSheetStepList.append(pOpSheetStep);
+        }
+        closeDBFile(szFile);
+    }
+    setModify(false);
+    return true;
 }
 
 bool HOpSheet::saveOpSheet()
 {
-    return false;
+    if(NULL == m_pOpSheetInfo)
+        return;
+    //1.存储OpSheetInfo结构，这个由handle统一处理
+    ushort wOpSheetID;
+    getAttr(OPSHEET_ATTR_ID,&wOpSheetID);
+    if((ushort)-1 == wOpSheetID)
+    {
+        HOpSheetInfo* pOpSheetInfo = m_pWfSystemMgr->addOpSheet();
+        if(!pOpSheetInfo) return false;
+        OPSHEETINFO opSheetInfo;
+        m_pOpSheetInfo->getOpSheetInfo(&opSheetInfo);
+        pOpSheetInfo->setOpSheetInfo(&opSheetInfo);
+    }
+    HOpSheetInfo* pOpSheetInfo = m_pWfSystemMgr->findOpSheetInfo(wOpSheetID);
+    if(!pOpSheetInfo) return false;
+    m_pOpSheetInfo->copyTo(pOpSheetInfo);
+    m_pWfSystemMgr->saveOpSheetInfo();
+
+    //2.存储步骤操作
+    char szFile[256],szPath[256];
+    getDataFilePath(DFPATH_OPSHEET,szPath);
+    sprintf(szFile,"%s%s%5u%s",szPath,"OPS",wOpSheetID,".OPS");
+    int fd = createDBFile(szFile);
+    if((int)-1 == fd)
+        return false;
+    DATAFILEHEADER dataFileHeader;
+    loadDataFileHeader(fd,&dataFileHeader);
+    int steps;
+    getAttr(OPSHEET_ATTR_STEPS,&steps);
+    dataFileHeader.wTotal = steps;
+    dataFileHeader.btType = FILE_TYPE_OPSHEET;
+    dataFileHeader.wTypeLen = sizeof(OPSHEETSTEP);
+    saveDataFileHeader(fd,&dataFileHeader);
+    HOpSheetStep* pOpSheetStep;
+    for(int i = 0; i < m_pOpSheetStepList.count();i++)
+    {
+        pOpSheetStep = m_pOpSheetStepList[i];
+        if(false == saveDBRecord(fd,++i,&pOpSheetStep->opSheetStep))
+        {
+            return false;
+        }
+    }
+    closeDBFile(szFile);
+    setModify(false);
+    return true;
 }
 
 void HOpSheet::close()
 {
-
+    if(m_pOpSheetInfo)
+    {
+        delete m_pOpSheetInfo;
+        m_pOpSheetInfo = NULL;
+    }
+    clearOpSheetSteps();
+    setModify(false);
 }
 
 void HOpSheet::copyTo(HOpSheetInfo* pOpSheetInfo)
 {
-
+    if(!m_pOpSheetInfo || !pOpSheetInfo)
+        return;
+    m_pOpSheetInfo->copyTo(pOpSheetInfo);
 }
 
 void HOpSheet::copyFrom(HOpSheetInfo* pOpSheetInfo)
 {
-
+    if(!pOpSheetInfo)
+        return;
+    if(!m_pOpSheetInfo)
+    {
+        m_pOpSheetInfo = new HOpSheetInfo;
+        if(!m_pOpSheetInfo)
+             return;
+    }
+    m_pOpSheetInfo->copyFrom(pOpSheetInfo);
 }

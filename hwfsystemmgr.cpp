@@ -10,6 +10,7 @@
 #include "hgraph.h"
 #include "hwfsystemwindow.h"
 #include "hgraphframe.h"
+#include "hopterm.h"
 //图形文件管理总类
 HWfSystemMgr::HWfSystemMgr()
 {
@@ -31,8 +32,8 @@ HWfSystemMgr::HWfSystemMgr()
 //启动时加载数据库
 void HWfSystemMgr::loadInstance()
 {
-   if(!dbDataInit())
-       return;
+
+
 }
 
 void HWfSystemMgr::exitInstance()
@@ -53,6 +54,105 @@ void HWfSystemMgr::loadGraphs()
     if(!m_wfSystemDoc)
         return;
     m_wfSystemDoc->loadAllGraph();
+}
+
+bool HWfSystemMgr::loadDB()
+{
+
+}
+
+bool HWfSystemMgr::loadData()
+{
+    if(!dbDataInit())
+        return false;
+}
+
+bool HWfSystemMgr::loadPointTerm()
+{
+    DATAFILEHEADER dataFileHandle;
+    memset(&dataFileHander,0,sizeof(DATAFILEHEADER));
+    //测点类型
+    int fd = openDB(FILE_TYPE_POINTTERM);
+    if(fd != (int)-1)
+    {
+        loadDataFileHeader(fd,&dataFileHandle);
+        for(int i = 0; i < dataFileHandle.wTotal;i++)
+        {
+            HPointTerm* pPointTerm = new HPointTerm;
+            if(false == loadDBRecord(fd,++i,pPointTerm->pointTerm))
+            {
+                delete pPointTerm;
+                return false;
+            }
+            m_pPointTermList.append(pPointTerm);
+        }
+        closeDB(FILE_TYPE_POINTTERM);
+    }
+    return true;
+}
+
+HPointTerm* HWfSystemMgr::findPointTerm(QString name)
+{
+    QList<HPointTerm*>::iterator it = m_pPointTermList.begin();
+    for(;it != m_pPointTermList.end();it++)
+    {
+        HPointTerm* pPt = *it;
+        if(pPt->getPointTermName() == name)
+            return pPt;
+    }
+    return NULL;
+}
+
+HPointTerm* HWfSystemMgr::findPointTerm(ushort id)
+{
+    QList<HPointTerm*>::iterator it = m_pPointTermList.begin();
+    for(;it != m_pPointTermList.end();it++)
+    {
+        HPointTerm* pPt = *it;
+        if(pPt->getPointTermID() == id)
+            return pPt;
+    }
+    return NULL;
+}
+
+bool HWfSystemMgr::loadOpTerm()
+{
+    //操作术语
+    //DATAFILEHEADER
+    int fd = createDB(FILE_TYPE_OPTERMGROUP);
+    if(fd != (int)-1)
+    {
+        for(int i = 0; i < m_pOpTermGroupList.count();i++)
+        {
+            HOpTermGroup* pOpTermGroup = (HOpTermGroup*)m_pOpTermGroupList[i];
+            if(pOpTermGroup)
+            {
+                if(false == loadDBRecord(fd,++i,&pOpTermGroup->opTermGroup))
+                {
+                    delete pOpTermGroup;
+                    pOpTermGroup = NULL;
+                    break;
+                }
+                if(false == pOpTermGroup->loadData(fileHandle))
+                {
+                    delete pOpTermGroup;
+                    pOpTermGroup = NULL;
+                    break;
+                }
+            }
+        }
+        //操作术语组
+        loadDataFileHeader(fd,&dataFileHandle);
+        dataFileHandle.wTotal = fileHandle.wOpTermGroup;
+        saveDataFileHeader(fd,&dataFileHandle);
+        closeDB(FILE_TYPE_OPTERMGROUP);
+    }
+    return;
+}
+
+bool HWfSystemMgr::loadPlugin()
+{
+
 }
 
 HWfSystemDoc* HWfSystemMgr::wfSystemDoc()
