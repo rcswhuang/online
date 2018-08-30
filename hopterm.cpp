@@ -43,7 +43,7 @@ bool HOpTermGroup::loadData(FILEHANDLE &fileHandle)
         return false;
     for(int i = 0; i < opTermGroup.wOpTermCounts;i++)
     {
-        OPTERM* pOpTerm = new OPTERM;
+        HOpTerm* pOpTerm = new OPTERM;
         if(false == loadDBRecord(fd,++fileHandle.wOpTerm,pOpTerm))
         {
             delete pOpTerm;

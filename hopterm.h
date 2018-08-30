@@ -44,6 +44,7 @@ public:
     HOpTerm* opTermFen(); //每个测点术语组合只有一组分合语句
     HOpTerm* opTermHe();
     HOpTerm* findOpTerm(ushort wTermID); //找到对象，一般采用回复对象，而不是用真假来作为返回值----设计方面的
+    bool loadData(FILEHANDLE &fileHandle);
 public:
     OPTERMGROUP opTermGroup;//groupID是唯一标识
     QList<HOpTerm*> m_pOpTermList;

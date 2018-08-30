@@ -117,8 +117,10 @@ HPointTerm* HWfSystemMgr::findPointTerm(ushort id)
 
 bool HWfSystemMgr::loadOpTerm()
 {
-    //操作术语
-    //DATAFILEHEADER
+    //有子文件必须要datafileheader结构 如厂站，操作术语
+    //如果没有子文件 则不需要。
+    DATAFILEHEADER fileHandle;
+    memset(&fileHandle,0,sizeof(DATAFILEHEADER));
     int fd = createDB(FILE_TYPE_OPTERMGROUP);
     if(fd != (int)-1)
     {
@@ -127,7 +129,7 @@ bool HWfSystemMgr::loadOpTerm()
             HOpTermGroup* pOpTermGroup = (HOpTermGroup*)m_pOpTermGroupList[i];
             if(pOpTermGroup)
             {
-                if(false == loadDBRecord(fd,++i,&pOpTermGroup->opTermGroup))
+                if(false == loadDBRecord(fd,++fileHandle,&pOpTermGroup->opTermGroup))
                 {
                     delete pOpTermGroup;
                     pOpTermGroup = NULL;
