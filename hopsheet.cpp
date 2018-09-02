@@ -558,14 +558,14 @@ bool HOpSheet::loadOpSheet(ushort wOpSheetID)
         for(int i = 0; i < dataFileHeader.wTotal;i++)
         {
             HOpSheetStep* pOpSheetStep = new HOpSheetStep;
-            if(false == loadDBRecord(fd,++i,&pOpSheetStep->opSheetStep))
+            if(false == loadDataFileRecord(fd,++i,&pOpSheetStep->opSheetStep))
             {
                 delete pOpSheetStep;
                 continue;
             }
             m_pOpSheetStepList.append(pOpSheetStep);
         }
-        closeDBFile(szFile);
+        closeDBFile(fd);
     }
     setModify(false);
     return true;
@@ -610,12 +610,12 @@ bool HOpSheet::saveOpSheet()
     for(int i = 0; i < m_pOpSheetStepList.count();i++)
     {
         pOpSheetStep = m_pOpSheetStepList[i];
-        if(false == saveDBRecord(fd,++i,&pOpSheetStep->opSheetStep))
+        if(false == saveDataFileRecord(fd,++i,&pOpSheetStep->opSheetStep))
         {
             return false;
         }
     }
-    closeDBFile(szFile);
+    closeDBFile(fd);
     setModify(false);
     return true;
 }

@@ -163,8 +163,6 @@ void HKernelTest::typeChanged()
                         item->setText(QString("%1kV").arg(analogue->nPowerGrade/1000));
 
                     ui->tableWidget->setItem(i,j,item);
-
-
                 }
             }
         }
